@@ -12,3 +12,184 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id           Int            @id @default(autoincrement())
+  fullname     String
+  email        String         @unique
+  phoneNumber  String?
+  password     String?
+  google_id    String?
+  isVerified   Boolean        @default(false)
+  role         String?         @default("user")
+  avatar_url   String?
+  family_name  String?
+  otp          String?
+  otpCreatedAt DateTime?
+  notification Notification[]
+  order        Order[]
+
+  @@map("users")
+}
+
+model Flight {
+  id                  Int            @id @default(autoincrement())
+  flight_number       String         @unique
+  time_arrive         DateTime       @db.Time(6)
+  time_departure      DateTime       @db.Time(6)
+  date_flight         DateTime       @db.Date
+  city_arrive_id      Int
+  city_destination_id Int
+  estimation_minute   Int
+  DetailFlight        DetailFlight[]
+  city_arrive         City           @relation("arrive", fields: [city_arrive_id], references: [id])
+  city_destination    City           @relation("destination", fields: [city_destination_id], references: [id])
+
+  @@map("flights")
+}
+
+model DetailFlight {
+  id              Int         @id @default(autoincrement())
+  flight_id       Int?
+  price           Int
+  detail_plane_id Int
+  detailPlaneId   DetailPlane @relation(fields: [detail_plane_id], references: [id])
+  flight          Flight?     @relation(fields: [flight_id], references: [id])
+  order           Order[]
+
+  @@map("detail_flight")
+}
+
+model Plane {
+  id          Int           @id @default(autoincrement())
+  name        String
+  brand       String?
+  capacity    Int
+  airlinesId  Int
+  series      String        @unique
+  DetailPlane DetailPlane[]
+  airline_id  Airlines      @relation(fields: [airlinesId], references: [id])
+
+  @@map("planes")
+}
+
+model DetailPlane {
+  id            Int            @id @default(autoincrement())
+  total_seat    Int
+  seat_class_id Int
+  plane_id      Int
+  DetailFlight  DetailFlight[]
+  plane         Plane          @relation(fields: [plane_id], references: [id])
+  seat_class    SeatClass      @relation(fields: [seat_class_id], references: [id])
+
+  @@map("detail_plane")
+}
+
+model Airlines {
+  id       Int     @id @default(autoincrement())
+  code     String  @unique
+  name     String
+  since    String
+  logo_url String
+  Plane    Plane[]
+
+  @@map("airlines")
+}
+
+model SeatClass {
+  id          Int           @id @default(autoincrement())
+  type_class  String
+  DetailPlane DetailPlane[]
+
+  @@map("seat_class")
+}
+
+model Passenger {
+  id              Int      @id @default(autoincrement())
+  title           String
+  fullname        String
+  family_name     String
+  birth_date      DateTime
+  nationality     String
+  identity_type   String?
+  identity_number String
+  issuing_country String
+  expired_date    DateTime
+  gender          String?
+  age_group       Int?
+  order_id        Int
+  order           Order    @relation(fields: [order_id], references: [id])
+
+  @@map("passengers")
+}
+
+model Continent {
+  id      Int       @id @default(autoincrement())
+  name    String
+  code    String    @unique
+  country Country[]
+
+  @@map("continents")
+}
+
+model Country {
+  id           Int       @id @default(autoincrement())
+  name         String
+  code         String    @unique
+  continent_id Int
+  city         City[]
+  continent    Continent @relation(fields: [continent_id], references: [id])
+
+  @@map("countries")
+}
+
+model City {
+  id                 Int      @id @default(autoincrement())
+  name               String
+  code               String   @unique
+  airport_name       String
+  country_id         Int
+  country            Country  @relation(fields: [country_id], references: [id])
+  flight_arrive      Flight[] @relation("arrive")
+  flight_destination Flight[] @relation("destination")
+
+  @@map("cities")
+}
+
+model Order {
+  id               Int          @id @default(autoincrement())
+  status           String       @default("unpaid")
+  code             String       @unique
+  detail_flight_id Int
+  expired_paid     DateTime
+  user_id          Int?
+  detailFlight     DetailFlight @relation(fields: [detail_flight_id], references: [id])
+  user             User?        @relation(fields: [user_id], references: [id])
+  passenger        Passenger[]
+  Payment          Payment[]
+
+  @@map("orders")
+}
+
+model Payment {
+  id             Int      @id @default(autoincrement())
+  amount         String
+  method_payment String
+  createdAt      DateTime
+  ordersId       Order    @relation(fields: [order_id], references: [id])
+  order_id       Int
+
+  @@map("payments")
+}
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  title     String
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime
+  user_id   Int
+  user      User     @relation(fields: [user_id], references: [id])
+
+  @@map("notifications")
+}

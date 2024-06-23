@@ -1,0 +1,353 @@
+openapi: 3.0.1
+info:
+  title: Final-Project-PKL
+  description: API Pemesanan Ticketing Pesawat
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000/api/v1
+tags:
+  - name: "Users"
+    description: Operations about User
+paths:
+  /users/register:
+    post:
+      tags:
+        - "Users"
+      summary: Register user
+      description: Register user with the provided information.
+      requestBody:
+        $ref: "#/components/requestBodies/createUser"
+
+      responses:
+        201:
+          description: User created was successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: User Created Successfully
+                  data:
+                    $ref: "#/components/schemas/UserResponse"
+
+        400:
+          description: Input must be required!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Input must be required
+                  data:
+                    example: ~
+
+        401:
+          description: Email already used!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Email already used!
+                  data:
+                    example: ~
+
+  /users/login:
+    post:
+      tags:
+        - "Users"
+      summary: Login user
+      description: Login user with the provided information.
+      requestBody:
+        $ref: "#/components/requestBodies/createLogin"
+
+      responses:
+        201:
+          description: Login was successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Login was successfull
+                  data:
+                    allOf:
+                      - $ref: "#/components/schemas/UserResponse"
+                      - type: object
+                        properties:
+                          token:
+                            type: integer
+                            example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZnVsbG5hbWUiOiJCYWd1cyBEd2kgUHV0cmEgQWRpeW9ubyIsImZhbWlseV9uYW1lIjpudWxsLCJlbWFpbCI6InN1Z2FiLmR3aTg4QGdtYWlsLmNvbSIsInBob25lTnVtYmVyIjoiMDgyMjI5NzQ5NDYyIiwiYXZhdGFyX3VybCI6bnVsbCwiZ29vZ2xlX2lkIjpudWxsLCJvdHAiOiI2NjI1NDMiLCJvdHBDcmVhdGVkQXQiOiIyMDI0LTA1LTI0VDE2OjEzOjU2LjA4OFoiLCJpc1ZlcmlmaWVkIjp0cnVlLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNjU2NzI1OH0._tBfHd_s_J9UWnblX_tHjnTmmt5b2PdXpvekhjHRXF0
+
+        400:
+          description: invalid email or password!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: invalid email or password!
+                  data:
+                    example: ~
+
+        403:
+          description: Verify Account User!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Account not verified. Please check your email!
+                  data:
+                    example: ~
+
+  /users/verify-otp:
+    put:
+      tags:
+        - "Users"
+      summary: Verify Otp Email User
+      description: Verify Otp Email User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: flynowb6@gmail.com
+                otp:
+                  type: string
+                  example: 123456
+
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Activation successfully. You're Account is Verified"
+                  data:
+                    $ref: "#/components/schemas/UserResponse"
+
+        400:
+          description: OTP Expired
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "OTP has expired. Please resend new otp."
+                  data:
+                    example: ~
+
+        401:
+          description: Invalid OTP
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Invalid OTP"
+                  data:
+                    example: ~
+
+        404:
+          description: user not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "user not found"
+                  data:
+                    example: ~
+
+  /users/resend-otp:
+    put:
+      tags:
+        - "Users"
+      summary: Resend Verify Otp Email User
+      description: Resend Verify Otp Email User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: flynowb6@gmail.com
+
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Resend OTP successfully"
+                  data:
+                    $ref: "#/components/schemas/UserResponse"
+
+        404:
+          description: user not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "user not found"
+                  data:
+                    example: ~
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    google_oauth:
+      type: oauth2
+      description: Google OAuth
+      flows:
+        authorizationCode:
+          authorizationUrl: https://accounts.google.com/o/oauth2/v2/auth
+          tokenUrl: https://www.googleapis.com/oauth2/v4/token
+          scopes:
+            profile: View your basic profile info
+            email: View your email address
+  schemas:
+    UserResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        fullname:
+          type: string
+          example: PKL
+        family_name:
+          type: string
+          example: ~
+        email:
+          type: string
+          example: sugab.dwi88@gmail.com
+        phoneNumber:
+          type: string
+          example: "08123456789"
+        avatar_url:
+          type: string
+          example: ~
+        google_id:
+          type: string
+          example: ~
+        otp:
+          type: string
+          example: 123456
+        otpCreatedAt:
+          type: string
+          example: 2024-06-30T16:03:46.444Z
+        isVerified:
+          type: boolean
+          example: false
+        role:
+          type: string
+          example: user
+
+  requestBodies:
+    createLogin:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              emailOrPhoneNumber:
+                type: string
+                example: sugab.dwi88@gmail.com
+              password:
+                type: string
+                example: Bagusdpa4#
+    createUser:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              fullname:
+                type: string
+                example: PKL
+              email:
+                type: string
+                example: sugab.dwi88@gmail.com
+              phoneNumber:
+                type: string
+                example: "08123456789"
+              password:
+                type: string
+                example: Bagusdpa4#
