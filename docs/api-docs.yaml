@@ -404,6 +404,63 @@ paths:
                   data:
                     example: ~
 
+  /users/authenticate:
+    get:
+      tags:
+        - "Users"
+      summary: Authenticate user
+      description: Authenticate user with the token.
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: OK
+                  data:
+                    $ref: "#/components/schemas/UserResponse"
+
+        403:
+          description: Token not provided!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: token not provided!!
+                  data:
+                    example: ~
+
+        409:
+          description: jwt malformed!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: jwt malformed
+                  data:
+                    example: ~
+      security:
+        - bearerAuth: []
+
 components:
   securitySchemes:
     bearerAuth:

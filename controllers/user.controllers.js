@@ -384,4 +384,15 @@ module.exports = {
       next(error);
     }
   },
+  auth: async (req, res, next) => {
+    try {
+      return res.status(200).json({
+        status: true,
+        message: "Success",
+        data: req.user,
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
 };
