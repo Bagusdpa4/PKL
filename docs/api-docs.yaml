@@ -266,6 +266,54 @@ paths:
                   data:
                     example: ~
 
+  /users/forget-password:
+    post:
+      tags:
+        - "Users"
+      summary: Forget Password Email User
+      description: Forget Password Email User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: flynowb6@gmail.com
+
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Success Send Email Forget Password"
+
+        404:
+          description: user not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "user not found"
+                  data:
+                    example: ~
+
 components:
   securitySchemes:
     bearerAuth:

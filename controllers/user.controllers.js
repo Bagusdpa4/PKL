@@ -54,11 +54,11 @@ module.exports = {
       }
 
       // Validate phone number length
-      if (phoneNumber.length < 10 || phoneNumber.length > 12) {
+      if (phoneNumber.length < 10 || phoneNumber.length > 13) {
         return res.status(400).json({
           status: false,
           message:
-            "Invalid phone number length. It must be between 10 and 12 characters.",
+            "Invalid phone number length. It must be between 10 and 13 characters.",
           data: null,
         });
       }
@@ -274,6 +274,38 @@ module.exports = {
         status: true,
         message: "Resend OTP successfully",
         data: resendOtp,
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+  forgetPassword: async (req, res, next) => {
+    try {
+      const { email } = req.body;
+
+      const user = await prisma.user.findUnique({ where: { email } });
+
+      if (!user) {
+        return res.status(404).json({
+          status: false,
+          message: "user not found",
+          data: null,
+        });
+      }
+
+      const token = jwt.sign({ email: user.email }, JWT_SECRET_KEY);
+
+      const html = await nodemailer.getHTML("link-reset.ejs", {
+        name: user.fullname,
+        url: `${req.protocol}://${req.get("host")}/reset-password?token=${token}`
+      });
+
+      await nodemailer.sendMail(email, "Password Reset Request", html);
+
+      // Setelah pengiriman email berhasil
+      return res.status(200).json({
+        status: true,
+        message: "Success Send Email Forget Password",
       });
     } catch (error) {
       next(error);
