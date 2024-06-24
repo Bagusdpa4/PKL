@@ -461,6 +461,65 @@ paths:
       security:
         - bearerAuth: []
 
+  /users/google:
+    get:
+      tags:
+        - Users
+      operationId: get-login-user-with-google
+      summary: Initiate Google OAuth 2.0 Authentication
+      description: Redirects the user to Google for authentication.
+      security:
+        - google_oauth: []
+      responses:
+        "302":
+          description: Redirect to Google for authentication.
+
+  /users/google/callback:
+    get:
+      tags:
+        - Users
+      operationId: get-login-user-with-google-callback
+      summary: Google OAuth 2.0 Callback
+      description: Handles the callback after successful Google authentication.
+      parameters:
+        - name: code
+          in: query
+          required: true
+          description: Authorization code received from Google.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - type: object
+                    properties:
+                      status:
+                        type: boolean
+                        example: true
+                      message:
+                        type: string
+                        example: "success"
+                  - type: object
+                    properties:
+                      err:
+                        type: string
+                        example: null
+                      data:
+                        type: object
+                        properties:
+                          user:
+                            allOf:
+                              - $ref: "#/components/schemas/UserResponse"
+                              - type: object
+                                properties:
+                                  token:
+                                    type: integer
+                                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZnVsbG5hbWUiOiJCYWd1cyBEd2kgUHV0cmEgQWRpeW9ubyIsImZhbWlseV9uYW1lIjpudWxsLCJlbWFpbCI6InN1Z2FiLmR3aTg4QGdtYWlsLmNvbSIsInBob25lTnVtYmVyIjoiMDgyMjI5NzQ5NDYyIiwiYXZhdGFyX3VybCI6bnVsbCwiZ29vZ2xlX2lkIjpudWxsLCJvdHAiOiI2NjI1NDMiLCJvdHBDcmVhdGVkQXQiOiIyMDI0LTA1LTI0VDE2OjEzOjU2LjA4OFoiLCJpc1ZlcmlmaWVkIjp0cnVlLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNjU2NzI1OH0._tBfHd_s_J9UWnblX_tHjnTmmt5b2PdXpvekhjHRXF0
+
 components:
   securitySchemes:
     bearerAuth:
