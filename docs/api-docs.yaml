@@ -8,6 +8,8 @@ servers:
 tags:
   - name: "Users"
     description: Operations about User
+  - name: "Profiles"
+    description: Operations about Profile User
 paths:
   /users/register:
     post:
