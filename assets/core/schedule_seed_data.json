@@ -1,0 +1,467 @@
+[
+    {
+        "city_arrive_id": 1,
+        "city_destination_id": 2,
+        "flight_number": "sup-5707",
+        "time_arrive": "2024-06-24T15:30:00.000Z",
+        "time_departure": "2024-06-24T07:00:00.000Z",
+        "date_flight": "2024-06-",
+        "estimation_minute": 240,
+        "detail_data": [
+            {
+                "detail_plane_id": 1,
+                "price": 500000
+            },
+            {
+                "detail_plane_id": 2,
+                "price": 1000000
+            },
+            {
+                "detail_plane_id": 3,
+                "price": 1500000
+            },
+            {
+                "detail_plane_id": 4,
+                "price": 2500000
+            },
+            {
+                "detail_plane_id": 5,
+                "price": 3000000
+            }
+        ]
+    },
+    {
+        "city_arrive_id": 2,
+        "city_destination_id": 1,
+        "flight_number": "mup-5708",
+        "time_arrive": "2024-06-24T14:45:00.000Z",
+        "time_departure": "2024-06-24T06:00:00.000Z",
+        "date_flight": "2024-06-",
+        "estimation_minute": 240,
+        "detail_data": [
+            {
+                "detail_plane_id": 1,
+                "price": 500000
+            },
+            {
+                "detail_plane_id": 2,
+                "price": 1000000
+            },
+            {
+                "detail_plane_id": 3,
+                "price": 1500000
+            },
+            {
+                "detail_plane_id": 4,
+                "price": 2500000
+            },
+            {
+                "detail_plane_id": 5,
+                "price": 3000000
+            }
+        ]
+    },
+    {
+        "city_arrive_id": 3,
+        "city_destination_id": 1,
+        "flight_number": "qua-5707",
+        "time_arrive": "2024-06-24T16:15:00.000Z",
+        "time_departure": "2024-06-24T07:00:00.000Z",
+        "date_flight": "2024-06-",
+        "estimation_minute": 240,
+        "detail_data": [
+            {
+                "detail_plane_id": 5,
+                "price": 500000
+            },
+            {
+                "detail_plane_id": 6,
+                "price": 1000000
+            },
+            {
+                "detail_plane_id": 7,
+                "price": 1500000
+            },
+            {
+                "detail_plane_id": 8,
+                "price": 2500000
+            },
+            {
+                "detail_plane_id": 9,
+                "price": 3000000
+            }
+        ]
+    },
+    {
+        "city_arrive_id": 1,
+        "city_destination_id": 3,
+        "flight_number": "gua-5708",
+        "time_arrive": "2024-06-24T17:45:00.000Z",
+        "time_departure": "2024-06-24T08:30:00.000Z",
+        "date_flight": "2024-06-",
+        "estimation_minute": 180,
+        "detail_data": [
+            {
+                "detail_plane_id": 10,
+                "price": 300000
+            },
+            {
+                "detail_plane_id": 11,
+                "price": 8000000
+            },
+            {
+                "detail_plane_id": 12,
+                "price": 1300000
+            },
+            {
+                "detail_plane_id": 13,
+                "price": 2300000
+            },
+            {
+                "detail_plane_id": 14,
+                "price": 2900000
+            }
+        ]
+    },
+    {
+        "city_arrive_id": 4,
+        "city_destination_id": 3,
+        "flight_number": "pug-5709",
+        "time_arrive": "2024-06-24T19:30:00.000Z",
+        "time_departure": "2024-06-24T10:00:00.000Z",
+        "date_flight": "2024-06-",
+        "estimation_minute": 180,
+        "detail_data": [
+            {
+                "detail_plane_id": 15,
+                "price": 300000
+            },
+            {
+                "detail_plane_id": 16,
+                "price": 8000000
+            },
+            {
+                "detail_plane_id": 17,
+                "price": 1300000
+            },
+            {
+                "detail_plane_id": 18,
+                "price": 2300000
+            },
+            {
+                "detail_plane_id": 19,
+                "price": 3000000
+            }
+        ]
+    },
+    {
+        "city_arrive_id": 1,
+        "city_destination_id": 2,
+        "flight_number": "sup-57010",
+        "time_arrive": "2024-06-24T15:30:00.000Z",
+        "time_departure": "2024-06-24T05:00:00.000Z",
+        "date_flight": "2024-06-24",
+        "estimation_minute": 240,
+        "detail_data": [
+            {
+                "detail_plane_id": 19,
+                "price": 500000
+            },
+            {
+                "detail_plane_id": 20,
+                "price": 1000000
+            },
+            {
+                "detail_plane_id": 21,
+                "price": 1500000
+            },
+            {
+                "detail_plane_id": 22,
+                "price": 2500000
+            },
+            {
+                "detail_plane_id": 23,
+                "price": 3000000
+            }
+        ]
+    },
+    {
+        "city_arrive_id": 1,
+        "city_destination_id": 2,
+        "flight_number": "sup-57011",
+        "time_arrive": "2024-06-25T15:30:00.000Z",
+        "time_departure": "2024-06-25T08:00:00.000Z",
+        "date_flight": "2024-06-25",
+        "estimation_minute": 240,
+        "detail_data": [
+            {
+                "detail_plane_id": 24,
+                "price": 500000
+            },
+            {
+                "detail_plane_id": 25,
+                "price": 1000000
+            },
+            {
+                "detail_plane_id": 26,
+                "price": 1500000
+            },
+            {
+                "detail_plane_id": 27,
+                "price": 2500000
+            },
+            {
+                "detail_plane_id": 28,
+                "price": 3000000
+            }
+        ]
+    },
+    {
+        "city_arrive_id": 1,
+        "city_destination_id": 2,
+        "flight_number": "sup-57012",
+        "time_arrive": "2024-06-26T15:30:00.000Z",
+        "time_departure": "2024-06-26T08:00:00.000Z",
+        "date_flight": "2024-06-26",
+        "estimation_minute": 240,
+        "detail_data": [
+            {
+                "detail_plane_id": 29,
+                "price": 500000
+            },
+            {
+                "detail_plane_id": 30,
+                "price": 1000000
+            },
+            {
+                "detail_plane_id": 31,
+                "price": 1500000
+            },
+            {
+                "detail_plane_id": 32,
+                "price": 2500000
+            },
+            {
+                "detail_plane_id": 33,
+                "price": 3000000
+            }
+        ]
+    },
+    {
+        "city_arrive_id": 1,
+        "city_destination_id": 2,
+        "flight_number": "sup-5713",
+        "time_arrive": "2024-06-27T15:30:00.000Z",
+        "time_departure": "2024-06-27T09:00:00.000Z",
+        "date_flight": "2024-06-27",
+        "estimation_minute": 240,
+        "detail_data": [
+            {
+                "detail_plane_id": 34,
+                "price": 500000
+            },
+            {
+                "detail_plane_id": 35,
+                "price": 1000000
+            },
+            {
+                "detail_plane_id": 36,
+                "price": 1500000
+            },
+            {
+                "detail_plane_id": 37,
+                "price": 2500000
+            },
+            {
+                "detail_plane_id": 38,
+                "price": 3000000
+            }
+        ]
+    },
+    {
+        "city_arrive_id": 1,
+        "city_destination_id": 2,
+        "flight_number": "sup-5714",
+        "time_arrive": "2024-06-28T15:30:00.000Z",
+        "time_departure": "2024-06-28T10:00:00.000Z",
+        "date_flight": "2024-06-28",
+        "estimation_minute": 240,
+        "detail_data": [
+            {
+                "detail_plane_id": 39,
+                "price": 500000
+            },
+            {
+                "detail_plane_id": 40,
+                "price": 1000000
+            },
+            {
+                "detail_plane_id": 41,
+                "price": 1500000
+            },
+            {
+                "detail_plane_id": 42,
+                "price": 2500000
+            },
+            {
+                "detail_plane_id": 43,
+                "price": 3000000
+            }
+        ]
+    },
+    {
+        "city_arrive_id": 3,
+        "city_destination_id": 4,
+        "flight_number": "pug-57015",
+        "time_arrive": "2024-06-24T19:30:00.000Z",
+        "time_departure": "2024-06-24T10:00:00.000Z",
+        "date_flight": "2024-06-24",
+        "estimation_minute": 180,
+        "detail_data": [
+            {
+                "detail_plane_id": 44,
+                "price": 300000
+            },
+            {
+                "detail_plane_id": 45,
+                "price": 8000000
+            },
+            {
+                "detail_plane_id": 46,
+                "price": 1300000
+            },
+            {
+                "detail_plane_id": 47,
+                "price": 2300000
+            },
+            {
+                "detail_plane_id": 48,
+                "price": 3000000
+            }
+        ]
+    },
+    {
+        "city_arrive_id": 5,
+        "city_destination_id": 6,
+        "flight_number": "lux-570816",
+        "time_arrive": "2024-06-25T18:30:00.000Z",
+        "time_departure": "2024-06-25T09:00:00.000Z",
+        "date_flight": "2024-06-25",
+        "estimation_minute": 210,
+        "detail_data": [
+            {
+                "detail_plane_id": 49,
+                "price": 600000
+            },
+            {
+                "detail_plane_id": 50,
+                "price": 9000000
+            },
+            {
+                "detail_plane_id": 51,
+                "price": 1400000
+            },
+            {
+                "detail_plane_id": 52,
+                "price": 2400000
+            },
+            {
+                "detail_plane_id": 53,
+                "price": 3100000
+            }
+        ]
+    },
+    {
+        "city_arrive_id": 7,
+        "city_destination_id": 8,
+        "flight_number": "jet-570917",
+        "time_arrive": "2024-06-26T17:30:00.000Z",
+        "time_departure": "2024-06-26T08:00:00.000Z",
+        "date_flight": "2024-06-26",
+        "estimation_minute": 230,
+        "detail_data": [
+            {
+                "detail_plane_id": 54,
+                "price": 700000
+            },
+            {
+                "detail_plane_id": 55,
+                "price": 10000000
+            },
+            {
+                "detail_plane_id": 56,
+                "price": 1500000
+            },
+            {
+                "detail_plane_id": 57,
+                "price": 2500000
+            },
+            {
+                "detail_plane_id": 58,
+                "price": 3200000
+            }
+        ]
+    },
+    {
+        "city_arrive_id": 9,
+        "city_destination_id": 10,
+        "flight_number": "air-571018",
+        "time_arrive": "2024-06-27T16:30:00.000Z",
+        "time_departure": "2024-06-27T07:00:00.000Z",
+        "date_flight": "2024-06-27",
+        "estimation_minute": 220,
+        "detail_data": [
+            {
+                "detail_plane_id": 59,
+                "price": 800000
+            },
+            {
+                "detail_plane_id": 60,
+                "price": 11000000
+            },
+            {
+                "detail_plane_id": 61,
+                "price": 1600000
+            },
+            {
+                "detail_plane_id": 62,
+                "price": 2600000
+            },
+            {
+                "detail_plane_id": 63,
+                "price": 3300000
+            }
+        ]
+    },
+    {
+        "city_arrive_id": 11,
+        "city_destination_id": 12,
+        "flight_number": "sky-571119",
+        "time_arrive": "2024-06-28T15:30:00.000Z",
+        "time_departure": "2024-06-28T06:00:00.000Z",
+        "date_flight": "2024-06-28",
+        "estimation_minute": 240,
+        "detail_data": [
+            {
+                "detail_plane_id": 64,
+                "price": 900000
+            },
+            {
+                "detail_plane_id": 65,
+                "price": 12000000
+            },
+            {
+                "detail_plane_id": 66,
+                "price": 1700000
+            },
+            {
+                "detail_plane_id": 67,
+                "price": 2700000
+            },
+            {
+                "detail_plane_id": 68,
+                "price": 3400000
+            }
+        ]
+    }
+]

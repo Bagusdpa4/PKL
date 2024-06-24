@@ -1,0 +1,307 @@
+[
+    {
+           "airlineId": "QG",
+           "name": "Citilink",
+           "shortName": "Citilink",
+           "iconUrl": "https://ik.imagekit.io/tvlk/image/imageResource/2015/12/17/1450350561012-6584b693edd67d75cfc25ecff41c5704.png?tr=q-75",
+           "iataCode": "QG",
+           "airplanes": {
+               "AirbusA320": {
+                   "id": "AirbusA320",
+                   "model": "Airbus A320",
+                   "seatLayout": null,
+                   "seatPitch": null,
+                   "seatType": null
+               },
+               "AirbusA320-3-3-29": {
+                   "id": "AirbusA320-3-3-29",
+                   "model": "Airbus A320",
+                   "seatLayout": "3-3",
+                   "seatPitch": "29",
+                   "seatType": "STANDARD_LEGROOM"
+               },
+               "ATR-72": {
+                   "id": "ATR-72",
+                   "model": "ATR-72",
+                   "seatLayout": null,
+                   "seatPitch": null,
+                   "seatType": null
+               },
+               "ATR-72-2-2-31": {
+                   "id": "ATR-72-2-2-31",
+                   "model": "ATR-72",
+                   "seatLayout": "2-2",
+                   "seatPitch": "31",
+                   "seatType": "ABOVE_AVERAGE_LEGROOM"
+               },
+               "ATR-72-2-2-28": {
+                   "id": "ATR-72-2-2-28",
+                   "model": "ATR-72",
+                   "seatLayout": "2-2",
+                   "seatPitch": "28",
+                   "seatType": "STANDARD_LEGROOM"
+               }
+           }
+       },
+        {
+           "airlineId": "IP",
+           "name": "Pelita Air",
+           "shortName": "Pelita",
+           "iconUrl": "https://ik.imagekit.io/tvlk/image/imageResource/2022/06/17/1655443880079-cbc17b9b0017fcffca1e294e9165c791.png?tr=q-75",
+           "iataCode": "IP",
+           "airplanes": {}
+       },
+        {
+           "airlineId": "QZ",
+           "name": "AirAsia",
+           "shortName": "AirAsia",
+           "iconUrl": "https://ik.imagekit.io/tvlk/image/imageResource/2022/09/05/1662367239331-9fca504de7049b772dd2386631705024.png?tr=q-75",
+           "iataCode": "QZ",
+           "airplanes": {}
+       },
+       {
+           "airlineId": "8B",
+           "name": "TransNusa",
+           "shortName": "TransNusa",
+           "iconUrl": "https://ik.imagekit.io/tvlk/image/imageResource/2022/05/05/1651724293186-ee122b2d6b66f97e7262b4e2db977e1b.png?tr=q-75",
+           "iataCode": "8B",
+           "airplanes": {
+               "AirbusA320-3-3-32": {
+                   "id": "AirbusA320-3-3-32",
+                   "model": "Airbus A320",
+                   "seatLayout": "3-3",
+                   "seatPitch": "32",
+                   "seatType": "STANDARD_LEGROOM"
+               },
+               "ARJ21-2-3-31": {
+                   "id": "ARJ21-2-3-31",
+                   "model": "ARJ21",
+                   "seatLayout": "2-3",
+                   "seatPitch": "31",
+                   "seatType": "STANDARD_LEGROOM"
+               }
+           }
+       },
+        {
+           "airlineId": "GA",
+           "name": "Garuda Indonesia",
+           "shortName": "Garuda",
+           "iconUrl": "https://ik.imagekit.io/tvlk/image/imageResource/2019/12/12/1576140134467-906ded3638e9045d664adc40caa8ec47.png?tr=q-75",
+           "iataCode": "GA",
+           "airplanes": {
+               "Boeing737-3-3-31": {
+                   "id": "Boeing737-3-3-31",
+                   "model": "Boeing 737",
+                   "seatLayout": "3-3",
+                   "seatPitch": "31",
+                   "seatType": "ABOVE_AVERAGE_LEGROOM"
+               },
+               "AirbusA332-3-3-31": {
+                   "id": "AirbusA332-3-3-31",
+                   "model": "Airbus A332",
+                   "seatLayout": "3-3",
+                   "seatPitch": "31",
+                   "seatType": "ABOVE_AVERAGE_LEGROOM"
+               },
+               "BombardierCR1000-2-2-31": {
+                   "id": "BombardierCR1000-2-2-31",
+                   "model": "Bombardier CR1000",
+                   "seatLayout": "2-2",
+                   "seatPitch": "31",
+                   "seatType": "ABOVE_AVERAGE_LEGROOM"
+               },
+               "CanadairRegionalJet1000-2-2-31": {
+                   "id": "CanadairRegionalJet1000-2-2-31",
+                   "model": "Canadair Regional Jet 1000",
+                   "seatLayout": "2-2",
+                   "seatPitch": "31",
+                   "seatType": "ABOVE_AVERAGE_LEGROOM"
+               },
+               "Boeing737-800-3-3-31": {
+                   "id": "Boeing737-800-3-3-31",
+                   "model": "Boeing 737-800",
+                   "seatLayout": "3-3",
+                   "seatPitch": "31",
+                   "seatType": "ABOVE_AVERAGE_LEGROOM"
+               },
+               "AirbusA330-2-4-2-32": {
+                   "id": "AirbusA330-2-4-2-32",
+                   "model": "Airbus A330",
+                   "seatLayout": "2-4-2",
+                   "seatPitch": "32",
+                   "seatType": "ABOVE_AVERAGE_LEGROOM"
+               }
+           }
+       },
+       {
+           "airlineId": "JT",
+           "name": "Lion Air",
+           "shortName": "Lion",
+           "iconUrl": "https://ik.imagekit.io/tvlk/image/imageResource/2015/12/17/1450349861201-09ec8f298222a73d66e8e96aa3b918f0.png?tr=q-75",
+           "iataCode": "JT, IW, ID",
+           "airplanes": {
+               "Boeing737-3-3-29": {
+                   "id": "Boeing737-3-3-29",
+                   "model": "Boeing 737",
+                   "seatLayout": "3-3",
+                   "seatPitch": "29",
+                   "seatType": "STANDARD_LEGROOM"
+               },
+               "Boeing737-3-3-31": {
+                   "id": "Boeing737-3-3-31",
+                   "model": "Boeing 737",
+                   "seatLayout": "3-3",
+                   "seatPitch": "31",
+                   "seatType": "ABOVE_AVERAGE_LEGROOM"
+               },
+               "Boeing737-3-3": {
+                   "id": "Boeing737-3-3",
+                   "model": "Boeing 737",
+                   "seatLayout": "3-3",
+                   "seatPitch": null,
+                   "seatType": null
+               },
+               "737M-3-3": {
+                   "id": "737M-3-3",
+                   "model": "737M",
+                   "seatLayout": "3-3",
+                   "seatPitch": null,
+                   "seatType": null
+               }
+           }
+       },
+       {
+           "airlineId": "ID",
+           "name": "Batik Air",
+           "shortName": "Batik",
+           "iconUrl": "https://ik.imagekit.io/tvlk/image/imageResource/2019/12/13/1576208649600-12471f9b7ffa159361f7bbbfb63065ee.png?tr=q-75",
+           "iataCode": "JT, IW, ID, OD",
+           "airplanes": {
+               "Boeing737-3-3-32": {
+                   "id": "Boeing737-3-3-32",
+                   "model": "Boeing 737",
+                   "seatLayout": "3-3",
+                   "seatPitch": "32",
+                   "seatType": "ABOVE_AVERAGE_LEGROOM"
+               },
+               "AirbusA320-3-3-32": {
+                   "id": "AirbusA320-3-3-32",
+                   "model": "Airbus A320",
+                   "seatLayout": "3-3",
+                   "seatPitch": "32",
+                   "seatType": "ABOVE_AVERAGE_LEGROOM"
+               },
+               "Boeing737-800-3-3-32": {
+                   "id": "Boeing737-800-3-3-32",
+                   "model": "Boeing 737-800",
+                   "seatLayout": "3-3",
+                   "seatPitch": "32",
+                   "seatType": "ABOVE_AVERAGE_LEGROOM"
+               }
+           }
+       },
+       {
+           "airlineId": "IU",
+           "name": "Super Air Jet",
+           "shortName": "Super Air Jet",
+           "iconUrl": "https://ik.imagekit.io/tvlk/image/imageResource/2021/07/12/1626063527483-f24d3eae611b51022ab0d1fc1457c820.png?tr=q-75",
+           "iataCode": "IU",
+           "airplanes": {}
+       },
+       {
+           "airlineId": "SJ",
+           "name": "Sriwijaya Air",
+           "shortName": "Sriwijaya",
+           "iconUrl": "https://ik.imagekit.io/tvlk/image/imageResource/2019/12/12/1576139484141-e3bb88cae8d9f1f89d9b3d1b8788c450.png?tr=q-75",
+           "iataCode": "SJ",
+           "airplanes": {
+               "Boeing737-3-3-29": {
+                   "id": "Boeing737-3-3-29",
+                   "model": "Boeing 737",
+                   "seatLayout": "3-3",
+                   "seatPitch": "29",
+                   "seatType": "STANDARD_LEGROOM"
+               }
+           }
+       },
+       {
+           "airlineId": "NM",
+           "name": "NAM Air",
+           "shortName": "NAM",
+           "iconUrl": "https://ik.imagekit.io/tvlk/image/imageResource/2015/12/17/1450350497772-d343e9b6823d18054324b818b999c394.png?tr=q-75",
+           "iataCode": "NM",
+           "airplanes": {
+               "Boeing737-3-3-29": {
+                   "id": "Boeing737-3-3-29",
+                   "model": "Boeing 737",
+                   "seatLayout": "3-3",
+                   "seatPitch": "29",
+                   "seatType": "STANDARD_LEGROOM"
+               }
+           }
+       },
+        {
+           "airlineId": "IW",
+           "name": "Wings Air",
+           "shortName": "Wings",
+           "iconUrl": "https://ik.imagekit.io/tvlk/image/imageResource/2015/12/17/1450349805026-5fecb4ceb5f79e38f2a5ae50f33b813e.png?tr=q-75",
+           "iataCode": "JT, IW, ID, OD",
+           "airplanes": {
+               "ATR-72-2-2": {
+                   "id": "ATR-72-2-2",
+                   "model": "ATR-72",
+                   "seatLayout": "2-2",
+                   "seatPitch": null,
+                   "seatType": null
+               }
+           }
+       },
+       {
+           "airlineId": "IL",
+           "name": "Trigana Air",
+           "shortName": "Trigana",
+           "iconUrl": "https://ik.imagekit.io/tvlk/image/imageResource/2016/12/27/1482845148999-c4273ca0398aa949d7c6d23cee5ecb5a.png?tr=q-75",
+           "iataCode": "IL",
+           "airplanes": {
+               "Boeing737-3-3-30": {
+                   "id": "Boeing737-3-3-30",
+                   "model": "Boeing 737",
+                   "seatLayout": "3-3",
+                   "seatPitch": "30",
+                   "seatType": "STANDARD_LEGROOM"
+               }
+           }
+       },
+       {
+           "airlineId": "OD",
+           "name": "Batik Air (Malaysia)",
+           "shortName": "Batik Air (Malaysia)",
+           "iconUrl": "https://ik.imagekit.io/tvlk/image/imageResource/2022/09/12/1662954449599-84af8d5374ba8462ff5707152042d674.png?tr=q-75",
+           "iataCode": "OD",
+           "airplanes": {}
+       },
+        {
+           "airlineId": "TZ",
+           "name": "Scoot",
+           "shortName": "Scoot",
+           "iconUrl": "https://ik.imagekit.io/tvlk/image/imageResource/2017/07/27/1501138573721-160c07575858c7d7e773ea06da4bfdd1.png?tr=q-75",
+           "iataCode": "TZ",
+           "airplanes": {}
+       },
+        {
+           "airlineId": "TR",
+           "name": "Scoot",
+           "shortName": "Scoot",
+           "iconUrl": "https://ik.imagekit.io/tvlk/image/imageResource/2017/07/27/1501138553075-1329db65f38802a050f34d38a3216235.png?tr=q-75",
+           "iataCode": "TR",
+           "airplanes": {}
+       },
+        {
+           "airlineId": "FY",
+           "name": "Firefly",
+           "shortName": "Firefly",
+           "iconUrl": "https://ik.imagekit.io/tvlk/image/imageResource/2015/12/17/1450349744161-20cb32ac2cf14426079d199981323e30.png?tr=q-75",
+           "iataCode": "FY",
+           "airplanes": {}
+       }
+   ]

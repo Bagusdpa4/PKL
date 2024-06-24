@@ -1,0 +1,202 @@
+[
+    {
+        "total_seat": 80,
+        "seat_class_id": 1,
+        "plane_id": 1
+    },
+    {
+        "total_seat": 50,
+        "seat_class_id": 2,
+        "plane_id": 1
+    },
+    {
+        "total_seat": 20,
+        "seat_class_id": 3,
+        "plane_id": 1
+    },
+    {
+        "total_seat": 30,
+        "seat_class_id": 4,
+        "plane_id": 1
+    },
+    {
+        "total_seat": 100,
+        "seat_class_id": 1,
+        "plane_id": 2
+    },
+    {
+        "total_seat": 70,
+        "seat_class_id": 2,
+        "plane_id": 2
+    },
+    {
+        "total_seat": 30,
+        "seat_class_id": 3,
+        "plane_id": 2
+    },
+    {
+        "total_seat": 10,
+        "seat_class_id": 4,
+        "plane_id": 2
+    },
+    {
+        "total_seat": 150,
+        "seat_class_id": 1,
+        "plane_id": 3
+    },
+    {
+        "total_seat": 90,
+        "seat_class_id": 2,
+        "plane_id": 3
+    },
+    {
+        "total_seat": 50,
+        "seat_class_id": 3,
+        "plane_id": 3
+    },
+    {
+        "total_seat": 20,
+        "seat_class_id": 4,
+        "plane_id": 3
+    },
+    {
+        "total_seat": 60,
+        "seat_class_id": 1,
+        "plane_id": 4
+    },
+    {
+        "total_seat": 40,
+        "seat_class_id": 2,
+        "plane_id": 4
+    },
+    {
+        "total_seat": 25,
+        "seat_class_id": 3,
+        "plane_id": 4
+    },
+    {
+        "total_seat": 15,
+        "seat_class_id": 4,
+        "plane_id": 4
+    },
+    {
+        "total_seat": 110,
+        "seat_class_id": 1,
+        "plane_id": 5
+    },
+    {
+        "total_seat": 60,
+        "seat_class_id": 2,
+        "plane_id": 5
+    },
+    {
+        "total_seat": 40,
+        "seat_class_id": 3,
+        "plane_id": 5
+    },
+    {
+        "total_seat": 10,
+        "seat_class_id": 4,
+        "plane_id": 5
+    },
+    {
+        "total_seat": 130,
+        "seat_class_id": 1,
+        "plane_id": 6
+    },
+    {
+        "total_seat": 80,
+        "seat_class_id": 2,
+        "plane_id": 6
+    },
+    {
+        "total_seat": 55,
+        "seat_class_id": 3,
+        "plane_id": 6
+    },
+    {
+        "total_seat": 15,
+        "seat_class_id": 4,
+        "plane_id": 6
+    },
+    {
+        "total_seat": 70,
+        "seat_class_id": 1,
+        "plane_id": 7
+    },
+    {
+        "total_seat": 50,
+        "seat_class_id": 2,
+        "plane_id": 7
+    },
+    {
+        "total_seat": 30,
+        "seat_class_id": 3,
+        "plane_id": 7
+    },
+    {
+        "total_seat": 10,
+        "seat_class_id": 4,
+        "plane_id": 7
+    },
+    {
+        "total_seat": 90,
+        "seat_class_id": 1,
+        "plane_id": 8
+    },
+    {
+        "total_seat": 70,
+        "seat_class_id": 2,
+        "plane_id": 8
+    },
+    {
+        "total_seat": 35,
+        "seat_class_id": 3,
+        "plane_id": 8
+    },
+    {
+        "total_seat": 15,
+        "seat_class_id": 4,
+        "plane_id": 8
+    },
+    {
+        "total_seat": 120,
+        "seat_class_id": 1,
+        "plane_id": 9
+    },
+    {
+        "total_seat": 85,
+        "seat_class_id": 2,
+        "plane_id": 9
+    },
+    {
+        "total_seat": 45,
+        "seat_class_id": 3,
+        "plane_id": 9
+    },
+    {
+        "total_seat": 20,
+        "seat_class_id": 4,
+        "plane_id": 9
+    },
+    {
+        "total_seat": 80,
+        "seat_class_id": 1,
+        "plane_id": 10
+    },
+    {
+        "total_seat": 55,
+        "seat_class_id": 2,
+        "plane_id": 10
+    },
+    {
+        "total_seat": 25,
+        "seat_class_id": 3,
+        "plane_id": 10
+    },
+    {
+        "total_seat": 10,
+        "seat_class_id": 4,
+        "plane_id": 10
+    }
+]

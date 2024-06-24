@@ -1,0 +1,62 @@
+[
+    {
+        "code": "GA123",
+        "name": "Garuda Indonesia",
+        "since": "1949",
+        "logo_url": "garuda-indonesia-logo.png"
+    },
+    {
+        "code": "LI234",
+        "name": "Lion Air",
+        "since": "1999",
+        "logo_url": "lion-air-logo.png"
+    },
+    {
+        "code": "BA345",
+        "name": "Batik Air",
+        "since": "2013",
+        "logo_url": "batik-air-logo.png"
+    },
+    {
+        "code": "CI456",
+        "name": "Citilink",
+        "since": "2001",
+        "logo_url": "citilink-logo.png"
+    },
+    {
+        "code": "AI567",
+        "name": "AirAsia Indonesia",
+        "since": "2004",
+        "logo_url": "air-asia-logo.png"
+    },
+    {
+        "code": "SP678",
+        "name": "Sriwijaya Air",
+        "since": "2003",
+        "logo_url": "sriwijaya-air-logo.png"
+    },
+    {
+        "code": "NA789",
+        "name": "NAM Air",
+        "since": "2013",
+        "logo_url": "nam-air-logo.png"
+    },
+    {
+        "code": "TP890",
+        "name": "Trigana Air",
+        "since": "1991",
+        "logo_url": "trigana-air-service-logo.png"
+    },
+    {
+        "code": "WI901",
+        "name": "Wings Air",
+        "since": "2003",
+        "logo_url": "http://example.com/logos/wingsair.png"
+    },
+    {
+        "code": "SU012",
+        "name": "Super Air Jet",
+        "since": "2020",
+        "logo_url": "super-air-jet-logo.png"
+    }
+]

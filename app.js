@@ -4,6 +4,7 @@ const path = require('path');
 const logger = require('morgan');
 const cors = require("cors");
 const routes = require("./routes");
+// const task = require("./service/cron_schedule_service");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -19,6 +20,8 @@ app.use(routes);
 app.get("/", (req, res) => {
   res.send(`<h1 align="center">Welcome To API PKL Project</h1>`);
 });
+
+// task.start()
 
 // 404 error handler
 app.use((req, res, next) => {
