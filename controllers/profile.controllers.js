@@ -3,6 +3,7 @@ const prisma = new PrismaClient();
 const { formatDateTimeToUTC } = require("../utils/formattedDate");
 const imageKit = require("../libs/imagekit");
 const multer = require("../libs/multer").image;
+const bcrypt = require("bcrypt");
 
 module.exports = {
   getDetail: async (req, res, next) => {
@@ -109,5 +110,90 @@ module.exports = {
         next(err);
       }
     });
+  },
+  updatePass: async (req, res, next) => {
+    try {
+      const { oldPassword, newPassword, newPasswordConfirmation } = req.body;
+
+      // Check if required parameters are provided
+      if (!oldPassword || !newPassword || !newPasswordConfirmation) {
+        return res.status(400).json({
+          status: false,
+          message: "All fields must be provided",
+          data: null,
+        });
+      }
+
+      const userId = req.user.id;
+
+      // Fetch the current user's hashed password from the database
+      const user = await prisma.user.findUnique({
+        where: { id: userId },
+        select: { password: true } // Select only the password field
+      });
+
+      // Check if the old password provided matches the user's current hashed password
+      let isOldPasswordCorrect = await bcrypt.compare(
+        oldPassword,
+        user.password
+      );
+      if (!isOldPasswordCorrect) {
+        return res.status(401).json({
+          status: false,
+          message: "Incorrect old password",
+          data: null,
+        });
+      }
+
+      // Validate the format of the new password using a regular expression
+      const passwordValidator =
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,12}$/;
+
+      if (!passwordValidator.test(newPassword)) {
+        return res.status(400).json({
+          status: false,
+          message: "Invalid password format. It must contain at least 1 lowercase, 1 uppercase, 1 digit number, 1 symbol, and be between 8 and 12 characters long.",
+          data: null,
+        });
+      }
+
+      // Check if the new password matches the password confirmation
+      if (newPassword !== newPasswordConfirmation) {
+        return res.status(400).json({
+          status: false,
+          message: "Password and password confirmation do not match",
+          data: null,
+        });
+      }
+
+      // Hash the new password
+      let encryptedNewPassword = await bcrypt.hash(newPassword, 10);
+
+      // Update user's password in the database
+      const updateUser = await prisma.user.update({
+        where: { id: userId },
+        data: { password: encryptedNewPassword },
+      });
+
+      // Create a notification for the user
+      await prisma.notification.create({
+        data: {
+          title: "Password",
+          message: "Your password has been updated successfully!",
+          createdAt: new Date().toISOString(),
+          user: { connect: { id: userId } },
+        },
+      });
+
+      updateUser.otpCreatedAt = formatDateTimeToUTC(updateUser.otpCreatedAt)
+
+      res.status(200).json({
+        status: true,
+        message: "Your password has been successfully changed",
+        data: updateUser,
+      });
+    } catch (error) {
+      next(error);
+    }
   },
 };
