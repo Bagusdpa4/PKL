@@ -520,6 +520,47 @@ paths:
                                     type: integer
                                     example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZnVsbG5hbWUiOiJCYWd1cyBEd2kgUHV0cmEgQWRpeW9ubyIsImZhbWlseV9uYW1lIjpudWxsLCJlbWFpbCI6InN1Z2FiLmR3aTg4QGdtYWlsLmNvbSIsInBob25lTnVtYmVyIjoiMDgyMjI5NzQ5NDYyIiwiYXZhdGFyX3VybCI6bnVsbCwiZ29vZ2xlX2lkIjpudWxsLCJvdHAiOiI2NjI1NDMiLCJvdHBDcmVhdGVkQXQiOiIyMDI0LTA1LTI0VDE2OjEzOjU2LjA4OFoiLCJpc1ZlcmlmaWVkIjp0cnVlLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNjU2NzI1OH0._tBfHd_s_J9UWnblX_tHjnTmmt5b2PdXpvekhjHRXF0
 
+  /profile:
+    get:
+      tags:
+        - "Profiles"
+      summary: Get detail user by id
+      description: Get detail user by id
+
+      responses:
+        200:
+          description: Success get detail user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: OK
+                  data:
+                    $ref: "#/components/schemas/UserResponse"
+        404:
+          description: user_id not found!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Users not found
+                  data:
+                    example: ~
+      security:
+        - bearerAuth: []
+
 components:
   securitySchemes:
     bearerAuth:
