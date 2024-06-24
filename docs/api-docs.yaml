@@ -146,7 +146,7 @@ paths:
                 email:
                   type: string
                   format: email
-                  example: flynowb6@gmail.com
+                  example: sugab.dwi88@gmail.com
                 otp:
                   type: string
                   example: 123456
@@ -231,7 +231,7 @@ paths:
                 email:
                   type: string
                   format: email
-                  example: flynowb6@gmail.com
+                  example: sugab.dwi88@gmail.com
 
       responses:
         200:
@@ -281,7 +281,7 @@ paths:
                 email:
                   type: string
                   format: email
-                  example: flynowb6@gmail.com
+                  example: sugab.dwi88@gmail.com
 
       responses:
         200:
@@ -334,10 +334,10 @@ paths:
               properties:
                 password:
                   type: string
-                  example: FlynowB6#
+                  example: Bagusdpa04#
                 passwordConfirmation:
                   type: string
-                  example: FlynowB6#
+                  example: Bagusdpa04#
 
       responses:
         200:
