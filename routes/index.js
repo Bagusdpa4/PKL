@@ -7,6 +7,7 @@ const path = require("path");
 
 // Import File routes
 const User = require("./user.routes")
+const Profile = require("./profile.routes")
 
 const swagger_path = path.resolve(__dirname, "../docs/api-docs.yaml");
 const file = fs.readFileSync(swagger_path, "utf-8");
@@ -17,5 +18,6 @@ router.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 // API
 router.use("/api/v1", User)
+router.use("/api/v1", Profile)
 
 module.exports = router;
