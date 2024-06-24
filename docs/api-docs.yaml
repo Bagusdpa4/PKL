@@ -4,7 +4,7 @@ info:
   description: API Pemesanan Ticketing Pesawat
   version: 1.0.0
 servers:
-  - url: https://projectpkl-bagus-dwi-putras-projects.vercel.app/api/v1
+  - url: https://project-pkl-binar.vercel.app/api/v1
   - url: http://localhost:3000/api/v1
 tags:
   - name: "Users"
