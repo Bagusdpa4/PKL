@@ -5,7 +5,8 @@ async function scheduleSeed(prisma) {
     const rawData = fs.readFileSync('./assets/core/schedule_seed_data.json');
     const data = JSON.parse(rawData);
     try {
-        for (let i = 1; i < 9; i++) {
+        for (let i = 1; i < 8; i++) {
+
             for (const v of data) {
                 const flightData = {
                     city_destination_id: v.city_destination_id,
@@ -13,7 +14,7 @@ async function scheduleSeed(prisma) {
                     flight_number: v.flight_number + i,
                     time_arrive: new Date(v.time_arrive),
                     time_departure: new Date(v.time_departure),
-                    date_flight: new Date(`${dateNow.getFullYear()}-${dateNow.getMonth() + 1}-${dateNow.getDate() + i}`),
+                    date_flight: checkDate(i),
                     estimation_minute: v.estimation_minute,
                 };
 
@@ -32,6 +33,25 @@ async function scheduleSeed(prisma) {
     } catch (error) {
         console.error('Error seeding schedule data:', error);
     }
+}
+function checkDate(daysLater) {
+    var now = new Date();
+    const totalDate = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+    let day = now.getDate();
+    let dayLater = day + daysLater
+    let month = now.getMonth() + 1;
+    let year = now.getFullYear();
+
+
+    if (dayLater > totalDate) {
+        dayLater = dayLater - totalDate
+
+        let nextDate = new Date(year, (month - 1) + 1, dayLater);
+        return nextDate
+    }
+    nextDate = new Date(year, month - 1, dayLater);
+    return nextDate
+
 }
 
 module.exports = scheduleSeed;
