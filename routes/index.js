@@ -8,6 +8,7 @@ const path = require("path");
 // Import File routes
 const User = require("./user.routes")
 const Profile = require("./profile.routes")
+const Flights = require("./flight.routes")
 
 const swagger_path = path.resolve(__dirname, "../docs/api-docs.yaml");
 const customCssUrl =
@@ -25,5 +26,6 @@ router.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument, { cust
 // API
 router.use("/api/v1", User)
 router.use("/api/v1", Profile)
+router.use("/api/v1", Flights)
 
 module.exports = router;

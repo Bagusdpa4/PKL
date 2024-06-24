@@ -11,6 +11,8 @@ tags:
     description: Operations about User
   - name: "Profiles"
     description: Operations about Profile User
+  - name: "Ticket"
+    description: Operations about Flight Schedule
 paths:
   /users/register:
     post:
@@ -726,6 +728,181 @@ paths:
       security:
         - bearerAuth: []
 
+  /ticket/flights:
+    get:
+      tags:
+        - "Ticket"
+      summary: Get all flights
+      description: Gets a list of all flights available in the database.
+      responses:
+        "200":
+          description: Successfully Get all flights
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "All flights retrieved successfully"
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/BasicFlightInfo"
+
+  /ticket/flight/{detailflightId}:
+    get:
+      tags:
+        - "Ticket"
+      summary: Get detailed flight information
+      description: Get detailed information about a specific flight by its ID.
+      parameters:
+        - in: path
+          name: detailFlightId
+          required: true
+          schema:
+            type: integer
+          description: The ID of the flight to retrieve
+      responses:
+        "200":
+          description: Flight details retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Flight details retrieved successfully
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      price:
+                        type: integer
+                        example: 500000
+                      flight:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          flight_number:
+                            type: string
+                            example: sup-570725
+                          time_arrive:
+                            type: string
+                            format: date-time
+                            example: 1970-01-01T15:30:00.000Z
+                          time_departure:
+                            type: string
+                            format: date-time
+                            example: 1970-01-01T05:00:00.000Z
+                          date_flight:
+                            type: string
+                            format: date-time
+                            example: 2024-05-25T00:00:00.000Z
+                          city_arrive_id:
+                            type: integer
+                            example: 1
+                          city_destination_id:
+                            type: integer
+                            example: 2
+                          estimation_minute:
+                            type: integer
+                            example: 240
+                          city_arrive:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                                example: 1
+                              name:
+                                type: string
+                                example: Tangerang
+                              code:
+                                type: string
+                                example: CGK
+                              airport_name:
+                                type: string
+                                example: Bandara Internasional Soekarno-Hatta
+                              country_id:
+                                type: integer
+                                example: 1
+                          city_destination:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                                example: 2
+                              name:
+                                type: string
+                                example: Denpasar
+                              code:
+                                type: string
+                                example: DPS
+                              airport_name:
+                                type: string
+                                example: Bandara Internasional Ngurah Rai
+                              country_id:
+                                type: integer
+                                example: 1
+                      detailPlaneId:
+                        type: object
+                        properties:
+                          seat_class:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                                example: 1
+                              type_class:
+                                type: string
+                                example: Ekonomi
+                          plane:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                                example: 1
+                              name:
+                                type: string
+                                example: Boeing 737-800
+                              airline_id:
+                                type: object
+                                properties:
+                                  id:
+                                    type: integer
+                                    example: 1
+                                  name:
+                                    type: string
+                                    example: Garuda Indonesia
+                                  logo_url:
+                                    type: string
+                                    example: http://example.com/logos/garuda.png
+
+        "404":
+          description: Flight not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Flight not found"
+
 components:
   securitySchemes:
     bearerAuth:
@@ -779,6 +956,37 @@ components:
         role:
           type: string
           example: user
+
+    BasicFlightInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        flight_number:
+          type: string
+          example: "sup-570725"
+        time_arrive:
+          type: string
+          format: date-time
+          example: "1970-01-01T15:30:00.000Z"
+        time_departure:
+          type: string
+          format: date-time
+          example: "1970-01-01T05:00:00.000Z"
+        date_flight:
+          type: string
+          format: date-time
+          example: "2024-05-25T00:00:00.000Z"
+        estimation_minute:
+          type: integer
+          example: 240
+        city_arrive_id:
+          type: integer
+          example: 1
+        city_destination_id:
+          type: integer
+          example: 2
 
   requestBodies:
     createLogin:
