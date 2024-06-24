@@ -636,6 +636,95 @@ paths:
       security:
         - bearerAuth: []
 
+  /profile/change-password:
+    put:
+      tags:
+        - "Profiles"
+      summary: Change user password
+      description: Allows a user to change their password by providing the old password, new password, and password confirmation.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                oldPassword:
+                  type: string
+                  description: "The current password of the user"
+                  example: "OldPassword123!"
+                newPassword:
+                  type: string
+                  description: "The new password for the user"
+                  example: "NewSecurePassword123!"
+                newPasswordConfirmation:
+                  type: string
+                  description: "Confirmation of the new password"
+                  example: "NewSecurePassword123!"
+      responses:
+        200:
+          description: Password changed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Your password has been successfully changed"
+                  data:
+                    $ref: "#/components/schemas/UserResponse"
+        400:
+          description: Bad request due to missing fields or invalid password format
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "All fields must be provided and passwords must match the required format"
+                  data:
+                    example: ~
+        401:
+          description: Unauthorized if the old password is incorrect
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Incorrect old password"
+                  data:
+                    example: ~
+        404:
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "User not found"
+                  data:
+                    example: ~
+      security:
+        - bearerAuth: []
+
 components:
   securitySchemes:
     bearerAuth:
