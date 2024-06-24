@@ -563,6 +563,79 @@ paths:
       security:
         - bearerAuth: []
 
+    put:
+      tags:
+        - "Profiles"
+      summary: Update user
+      description: Edit user by id. Supports updating fullname, phoneNumber, and avatar.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                fullname:
+                  type: string
+                  description: "Full name of the user"
+                  example: "RevaFidelaAdelPantjoro"
+                phoneNumber:
+                  type: string
+                  description: "Phone number of the user"
+                  example: "08947583901"
+                avatar_url:
+                  type: string
+                  format: binary
+                  description: "Avatar image file max 2MB"
+      responses:
+        200:
+          description: User updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Update Data Successfully"
+                  data:
+                    $ref: "#/components/schemas/UserResponse"
+        400:
+          description: Input must be provided!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "At least one field must be updated"
+                  data:
+                    example: ~
+        404:
+          description: user_id not found!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "User not found"
+                  data:
+                    example: ~
+      security:
+        - bearerAuth: []
+
 components:
   securitySchemes:
     bearerAuth:
