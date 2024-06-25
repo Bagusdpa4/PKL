@@ -15,6 +15,10 @@ tags:
     description: Operations about Flight Schedule
   - name: "Plane"
     description: Operations about Planes
+  - name: "Destination"
+    description: Operations about Destination
+  - name: "Order"
+    description: Operations about Order
 paths:
   /users/register:
     post:
@@ -1291,6 +1295,332 @@ paths:
                     items:
                       $ref: "#/components/schemas/Continent"
 
+  /ticket/order/{detailFlightId}:
+    post:
+      tags:
+        - "Order"
+      summary: Create a new order
+      description: Create a new order with details of the flight and passengers.
+      parameters:
+        - in: path
+          name: detailFlightId
+          required: true
+          schema:
+            type: integer
+          description: The ID of the flight detail for which the order is being created
+      requestBody:
+        $ref: "#/components/requestBodies/orderRequest"
+      responses:
+        201:
+          description: Order created successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/OrderResponse"
+                  - type: object
+                    properties:
+                      passenger:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Passenger"
+        400:
+          description: Bad request, missing or invalid fields
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Missing or invalid fields in request"
+                  data:
+                    example: ~
+      security:
+        - bearerAuth: []
+
+  /ticket/QR:
+    post:
+      tags:
+        - "Order"
+      summary: Create a QR-Code for order ticket
+      description: Create a QR-Code for order ticket
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                qr_data:
+                  type: string
+                  example: https://express-development-3576.up.railway.app/api-docs/#/
+      responses:
+        201:
+          description: Generate QR-Code Successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Generate QR-Code Successfully"
+                  data:
+                    type: string
+                    example: https://ik.imagekit.io/flynowb6/1718302498610_uIm9OyuLP.png
+        400:
+          description: qr_data must be required and must be a string
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "qr_data must be required and must be a string"
+                  data:
+                    example: null
+      security:
+        - bearerAuth: []
+
+  /ticket/orders:
+    get:
+      tags:
+        - "Order"
+      summary: Get all order
+      description: Get all order
+      parameters:
+        - in: query
+          name: find
+          schema:
+            type: string
+          description: Search order by booking code
+        - in: query
+          name: startDate
+          schema:
+            type: string
+            format: date
+          description: Filter orders by expiration date. Use format YYYY-MM-DD.
+        - in: query
+          name: endDate
+          schema:
+            type: string
+            format: date
+          description: Filter orders by expiration date. Use format YYYY-MM-DD.
+        - in: query
+          name: filter
+          schema:
+            type: string
+          description: Filter orders by status order ('paid', 'unpaid', 'cancelled').
+      responses:
+        200:
+          description: Get all orders successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Get all orders successfully"
+                  data:
+                    type: array
+                    items:
+                      allOf:
+                        - $ref: "#/components/schemas/OrderResponse"
+                        - type: object
+                          properties:
+                            detailFlight:
+                              type: object
+                              properties:
+                                id:
+                                  type: integer
+                                  example: 1
+                                price:
+                                  type: integer
+                                  example: 10000000
+                                detailPlaneId:
+                                  type: object
+                                  properties:
+                                    seat_class:
+                                      type: object
+                                      properties:
+                                        id:
+                                          type: integer
+                                          example: 1
+                                        type_class:
+                                          type: string
+                                          example: Ekonomi
+                                flight:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: integer
+                                      example: 4
+                                    flight_number:
+                                      type: string
+                                      example: gua-570825
+                                    time_arrive:
+                                      type: string
+                                      example: 17:45
+                                    time_departure:
+                                      type: string
+                                      example: 08:30
+                                    date_flight:
+                                      type: string
+                                      example: 25-05-2024
+                                    estimation_minute:
+                                      type: integer
+                                      example: 180
+                                    city_arrive:
+                                      $ref: "#/components/schemas/City"
+                                    city_destination:
+                                      $ref: "#/components/schemas/City"
+      security:
+        - bearerAuth: []
+
+  /ticket/order/{orderId}:
+    get:
+      tags:
+        - "Order"
+      summary: Retrieve a specific order
+      description: Retrieve details of a specific order by order ID.
+      parameters:
+        - in: path
+          name: orderId
+          required: true
+          schema:
+            type: integer
+          description: The ID of the order to retrieve
+      responses:
+        200:
+          description: Successfully retrieved the order
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/OrderResponse"
+                  - type: array
+                    properties:
+                      passenger:
+                        $ref: "#/components/schemas/Passenger"
+                  - type: object
+                    properties:
+                      detailFlight:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          flight_id:
+                            type: integer
+                            example: 1
+                          detail_plane_id:
+                            type: integer
+                            example: 1
+                          price:
+                            type: integer
+                            example: 10000000
+                          flight:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                                example: 4
+                              flight_number:
+                                type: string
+                                example: gua-570825
+                              time_arrive:
+                                type: string
+                                example: 17:45
+                              time_departure:
+                                type: string
+                                example: 08:30
+                              date_flight:
+                                type: string
+                                example: 25-05-2024
+                              estimation_minute:
+                                type: integer
+                                example: 180
+                              city_arrive:
+                                $ref: "#/components/schemas/City"
+                              city_destination:
+                                $ref: "#/components/schemas/City"
+                          detailPlane:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                                example: 1
+                              total_seat:
+                                type: integer
+                                example: 80
+                              seat_class_id:
+                                type: integer
+                                example: 1
+                              plane_id:
+                                type: integer
+                                example: 1
+                              plane:
+                                type: object
+                                properties:
+                                  id:
+                                    type: integer
+                                    example: 2
+                                  name:
+                                    type: string
+                                    example: Airbus A320
+                                  brand:
+                                    type: string
+                                    example: Airbus
+                                  capacity:
+                                    type: integer
+                                    example: 180
+                                  airlinesId:
+                                    type: integer
+                                    example: 2
+                                  series:
+                                    type: string
+                                    example: 72635
+                              seat_class:
+                                type: object
+                                properties:
+                                  id:
+                                    type: integer
+                                    example: 1
+                                  type_class:
+                                    type: string
+                                    example: "Ekonomi"
+        404:
+          description: Order not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Order not found"
+                  data:
+                    example: ~
+      security:
+        - bearerAuth: []
+
 components:
   securitySchemes:
     bearerAuth:
@@ -1498,6 +1828,62 @@ components:
           type: integer
           example: 1
 
+    Passenger:
+      type: object
+      properties:
+        title:
+          type: string
+          example: Mr
+        fullname:
+          type: string
+          example: John Doe
+        family_name:
+          type: string
+          example: Doe
+        birth_date:
+          type: string
+          format: date
+          example: "1990-01-01"
+        nationality:
+          type: string
+          example: USA
+        identity_type:
+          type: string
+          example: passport
+        identity_number:
+          type: string
+          example: P12345612
+        expired_date:
+          type: string
+          format: date
+          example: "2030-01-01"
+        issuing_country:
+          type: string
+          example: USA
+
+    OrderResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        status:
+          type: string
+          example: unpaid
+        code:
+          type: string
+          example: ORD123456
+        detail_flight_id:
+          type: integer
+          example: 30
+        expired_paid:
+          type: string
+          format: date-time
+          example: "2024-05-25T14:20:18.724Z"
+        user_id:
+          type: integer
+          example: 1
+
   requestBodies:
     createLogin:
       content:
@@ -1529,3 +1915,13 @@ components:
               password:
                 type: string
                 example: Bagusdpa4#
+    orderRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              passengers:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Passenger"
