@@ -730,6 +730,115 @@ paths:
       security:
         - bearerAuth: []
 
+  /ticket/schedule:
+    post:
+      tags:
+        - "Ticket"
+      summary: Find ticket
+      description: Find ticket
+      parameters:
+        - name: page
+          in: query
+          description: Page number for pagination.
+          required: false
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                city_arrive_id:
+                  type: string
+                  example: surabaya
+                city_destination_id:
+                  type: string
+                  example: Tangerang
+                date_departure:
+                  type: string
+                  example: 25-05-2024
+                seat_class:
+                  type: integer
+                  example: 2
+                passenger:
+                  type: object
+                  properties:
+                    adult:
+                      type: integer
+                      example: 1
+                    children:
+                      type: integer
+                      example: 1
+                sorting:
+                  type: object
+                  properties:
+                    sortAsc:
+                      type: boolean
+                      example: true
+                    price_from:
+                      type: integer
+                      example: 200000
+                    price_to:
+                      type: integer
+                      example: 1500000
+                    time_departure_from:
+                      type: string
+                      example: 07:00
+                    time_departure_to:
+                      type: string
+                      example: 09:00
+
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/FlightSchedule"
+
+  /ticket/class:
+    get:
+      tags:
+        - "Ticket"
+      summary: Get All type_class
+      description: Get All type_class
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: success retrive city data
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        type_class:
+                          type: string
+                          example: Ekonomi
+
   /ticket/flights:
     get:
       tags:
@@ -905,103 +1014,6 @@ paths:
                     type: string
                     example: "Flight not found"
 
-  /planes:
-    get:
-      tags:
-        - "Plane"
-      summary: Get all planes
-      description: Get a list of all planes available in the database.
-      responses:
-        "200":
-          description: All planes Get successfully
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: boolean
-                    example: true
-                  message:
-                    type: string
-                    example: "All planes retrieved successfully"
-                  data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Plane"
-
-  /plane/{planeId}:
-    get:
-      tags:
-        - "Plane"
-      summary: Get detailed plane information
-      description: Get detailed information about a specific plane by its ID.
-      parameters:
-        - in: path
-          name: planeId
-          required: true
-          schema:
-            type: integer
-          description: The ID of the plane to retrieve
-      responses:
-        "200":
-          description: Plane details retrieved successfully
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: boolean
-                    example: true
-                  message:
-                    type: string
-                    example: "Plane details retrieved successfully"
-                  data:
-                    allOf:
-                      - $ref: "#/components/schemas/Plane"
-                      - type: object
-                        properties:
-                          DetailPlane:
-                            type: array
-                            items:
-                              type: object
-                              properties:
-                                id:
-                                  type: integer
-                                  example: 1
-                                total_seat:
-                                  type: integer
-                                  example: 80
-                                seat_class_id:
-                                  type: integer
-                                  example: 1
-                                plane_id:
-                                  type: integer
-                                  example: 1
-                                seat_class:
-                                  type: object
-                                  properties:
-                                    id:
-                                      type: integer
-                                      example: 1
-                                    type_class:
-                                      type: string
-                                      example: "Ekonomi"
-        "404":
-          description: Plane not found
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: boolean
-                    example: false
-                  message:
-                    type: string
-                    example: "Plane not found"
-
 components:
   securitySchemes:
     bearerAuth:
@@ -1056,6 +1068,58 @@ components:
           type: string
           example: user
 
+    FlightSchedule:
+      type: object
+      properties:
+        flightDetailId:
+          type: integer
+          description: Unique identifier for the flight detail.
+          example: 13
+        price:
+          type: integer
+          description: Price of a single ticket in the smallest currency unit (e.g., cents).
+          example: 300000
+        totalPrice:
+          type: integer
+          description: Total price for all tickets in the smallest currency unit (e.g., cents).
+          example: 600000
+        flightSeat:
+          type: string
+          description: Class of the flight seat.
+          example: Ekonomi
+        flightPlane:
+          type: string
+          description: Model of the airplane.
+          example: Boeing 737-900ER
+        id:
+          type: integer
+          example: 4
+        flight_number:
+          type: string
+          example: gua-570825
+        time_arrive:
+          type: string
+          example: 17:45
+        time_departure:
+          type: string
+          example: 08:30
+        date_flight:
+          type: string
+          example: 25-05-2024
+        city_arrive_id:
+          type: integer
+          example: 1
+        city_destination_id:
+          type: integer
+          example: 3
+        estimation_minute:
+          type: integer
+          example: 180
+        # city_arrive:
+        #   $ref: "#/components/schemas/City"
+        # city_destination:
+        #   $ref: "#/components/schemas/City"
+
     BasicFlightInfo:
       type: object
       properties:
@@ -1086,28 +1150,6 @@ components:
         city_destination_id:
           type: integer
           example: 2
-
-    Plane:
-      type: object
-      properties:
-        id:
-          type: integer
-          example: 2
-        name:
-          type: string
-          example: Airbus A320
-        brand:
-          type: string
-          example: Airbus
-        capacity:
-          type: integer
-          example: 180
-        airlinesId:
-          type: integer
-          example: 2
-        series:
-          type: string
-          example: 72635
 
   requestBodies:
     createLogin:
