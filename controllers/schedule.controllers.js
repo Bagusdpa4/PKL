@@ -117,54 +117,54 @@ const findSchedule = async (req, res, next) => {
     }
 }
 
-// const mostPurchaseSchedule = async (req, res, next) => {
-//     const { continent } = req.query
-//     let isContinent = false
-//     let data
-//     if (continent != null) {
-//         isContinent = true
-//         data = await orderService.getDataForRecomendationByContinent(Number(continent))
-//     } else {
-//         data = await orderService.getDataForRecomendation()
-//     }
+const mostPurchaseSchedule = async (req, res, next) => {
+    const { continent } = req.query
+    let isContinent = false
+    let data
+    if (continent != null) {
+        isContinent = true
+        data = await orderService.getDataForRecomendationByContinent(Number(continent))
+    } else {
+        data = await orderService.getDataForRecomendation()
+    }
 
-//     data.forEach((countryObject) => {
-//         countryObject.order_count = Number(countryObject.order_count)
-//     });
+    data.forEach((countryObject) => {
+        countryObject.order_count = Number(countryObject.order_count)
+    });
 
-//     data.sort((a, b) => b.order_count - a.order_count)
+    data.sort((a, b) => b.order_count - a.order_count)
 
-//     data = data.slice(0, 5)
+    data = data.slice(0, 5)
 
-//     // for (let item of data) {
-//     //     item = await scheduleService.getDetailFlightById(item.detail_flight_id);
-//     //     delete item.detail_flight_id
-//     //     delete item.order_count
-//     // }
+    // for (let item of data) {
+    //     item = await scheduleService.getDetailFlightById(item.detail_flight_id);
+    //     delete item.detail_flight_id
+    //     delete item.order_count
+    // }
 
-//     data = await Promise.all(data.map(async (item) => {
-//         return await scheduleService.getDetailFlightById(item.detail_flight_id)
+    data = await Promise.all(data.map(async (item) => {
+        return await scheduleService.getDetailFlightById(item.detail_flight_id)
 
-//     }))
+    }))
 
-//     if (data.length == 0 && !isContinent) {
-//         data = await scheduleService.getDetailFlight()
-//     }
+    if (data.length == 0 && !isContinent) {
+        data = await scheduleService.getDetailFlight()
+    }
 
 
-//     if (!data) {
-//         return jsonResponse(res, 400, {
-//             status: false,
-//             message: "schedule data not found",
-//         })
-//     }
+    if (!data) {
+        return jsonResponse(res, 400, {
+            status: false,
+            message: "schedule data not found",
+        })
+    }
 
-//     return jsonResponse(res, 200, {
-//         status: true,
-//         message: "success retrive schedule data",
-//         data
-//     })
-// }
+    return jsonResponse(res, 200, {
+        status: true,
+        message: "success retrive schedule data",
+        data
+    })
+}
 
 function calculateTotalPassengers(passenger) {
     const { adult, children } = passenger
@@ -176,5 +176,5 @@ function calculateTotalPassengers(passenger) {
 
 module.exports = {
     findSchedule,
-    // mostPurchaseSchedule
+    mostPurchaseSchedule
 }
