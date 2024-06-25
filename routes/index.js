@@ -8,6 +8,7 @@ const path = require("path");
 // Import File routes
 const User = require("./user.routes")
 const Profile = require("./profile.routes")
+const cityRoute = require("./city.routes")
 const Flights = require("./flight.routes")
 const Plane = require("./plane.routes")
 
@@ -27,6 +28,7 @@ router.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument, { cust
 // API
 router.use("/api/v1", User)
 router.use("/api/v1", Profile)
+router.use("/api/v1", cityRoute)
 router.use("/api/v1", Flights)
 router.use("/api/v1", Plane)
 
