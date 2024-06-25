@@ -54,4 +54,39 @@ module.exports = {
       next(err);
     }
   },
+  readNotificationId: async (req, res, next) => {
+    try {
+      const { notificationId } = req.params;
+      if (!notificationId) {
+        return res.status(400).json({
+          status: false,
+          message: "Notification ID is required",
+        });
+      }
+
+      const notification = await prisma.notification.update({
+        where: { id: Number(notificationId) },
+        data: {
+          isRead: true,
+        },
+      });
+
+      if (!notification) {
+        return res.status(404).json({
+          status: false,
+          message: "Notification not found",
+        });
+      }
+
+      notification.createdAt = formatDateTimeToUTC(notification.createdAt);
+
+      res.status(200).json({
+        status: true,
+        message: "Notification marked as read",
+        data: notification,
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
 };
