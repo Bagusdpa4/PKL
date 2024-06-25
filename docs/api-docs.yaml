@@ -864,7 +864,7 @@ paths:
                     items:
                       $ref: "#/components/schemas/BasicFlightInfo"
 
-  /ticket/flight/{detailflightId}:
+  /ticket/flight/{detailFlightId}:
     get:
       tags:
         - "Ticket"
