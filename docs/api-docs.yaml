@@ -13,6 +13,8 @@ tags:
     description: Operations about Profile User
   - name: "Ticket"
     description: Operations about Flight Schedule
+  - name: "Plane"
+    description: Operations about Planes
 paths:
   /users/register:
     post:
@@ -903,6 +905,31 @@ paths:
                     type: string
                     example: "Flight not found"
 
+  /planes:
+    get:
+      tags:
+        - "Plane"
+      summary: Get all planes
+      description: Get a list of all planes available in the database.
+      responses:
+        "200":
+          description: All planes Get successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "All planes retrieved successfully"
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Plane"
+
 components:
   securitySchemes:
     bearerAuth:
@@ -987,6 +1014,28 @@ components:
         city_destination_id:
           type: integer
           example: 2
+
+    Plane:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 2
+        name:
+          type: string
+          example: Airbus A320
+        brand:
+          type: string
+          example: Airbus
+        capacity:
+          type: integer
+          example: 180
+        airlinesId:
+          type: integer
+          example: 2
+        series:
+          type: string
+          example: 72635
 
   requestBodies:
     createLogin:
