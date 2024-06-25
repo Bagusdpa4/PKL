@@ -9,6 +9,8 @@ const path = require("path");
 const User = require("./user.routes")
 const Profile = require("./profile.routes")
 const Flights = require("./flight.routes")
+const classRoute = require("./seat_class.routes")
+const scheduleRoute = require("./schedule.routes")
 
 const swagger_path = path.resolve(__dirname, "../docs/api-docs.yaml");
 const customCssUrl =
@@ -27,5 +29,7 @@ router.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument, { cust
 router.use("/api/v1", User)
 router.use("/api/v1", Profile)
 router.use("/api/v1", Flights)
+router.use("/api/v1", classRoute)
+router.use("/api/v1", scheduleRoute)
 
 module.exports = router;
