@@ -13,6 +13,8 @@ tags:
     description: Operations about Profile User
   - name: "Ticket"
     description: Operations about Flight Schedule
+  - name: "Plane"
+    description: Operations about Planes
 paths:
   /users/register:
     post:
@@ -903,6 +905,103 @@ paths:
                     type: string
                     example: "Flight not found"
 
+  /planes:
+    get:
+      tags:
+        - "Plane"
+      summary: Get all planes
+      description: Get a list of all planes available in the database.
+      responses:
+        "200":
+          description: All planes Get successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "All planes retrieved successfully"
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Plane"
+
+  /plane/{planeId}:
+    get:
+      tags:
+        - "Plane"
+      summary: Get detailed plane information
+      description: Get detailed information about a specific plane by its ID.
+      parameters:
+        - in: path
+          name: planeId
+          required: true
+          schema:
+            type: integer
+          description: The ID of the plane to retrieve
+      responses:
+        "200":
+          description: Plane details retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Plane details retrieved successfully"
+                  data:
+                    allOf:
+                      - $ref: "#/components/schemas/Plane"
+                      - type: object
+                        properties:
+                          DetailPlane:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                id:
+                                  type: integer
+                                  example: 1
+                                total_seat:
+                                  type: integer
+                                  example: 80
+                                seat_class_id:
+                                  type: integer
+                                  example: 1
+                                plane_id:
+                                  type: integer
+                                  example: 1
+                                seat_class:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: integer
+                                      example: 1
+                                    type_class:
+                                      type: string
+                                      example: "Ekonomi"
+        "404":
+          description: Plane not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Plane not found"
+
 components:
   securitySchemes:
     bearerAuth:
@@ -987,6 +1086,28 @@ components:
         city_destination_id:
           type: integer
           example: 2
+
+    Plane:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 2
+        name:
+          type: string
+          example: Airbus A320
+        brand:
+          type: string
+          example: Airbus
+        capacity:
+          type: integer
+          example: 180
+        airlinesId:
+          type: integer
+          example: 2
+        series:
+          type: string
+          example: 72635
 
   requestBodies:
     createLogin:
