@@ -1,4 +1,4 @@
-// const orderService = require("../service/order_service")
+const orderService = require("../service/order_service")
 const scheduleService = require("../service/schedule_service")
 const { getCityId } = require("../service/city_service")
 const { formatTimeToUTC, formatAddZeroFront, convertToIso, convertTOManual } = require("../utils/formattedDate")
