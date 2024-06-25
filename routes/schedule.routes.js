@@ -5,6 +5,6 @@ const scheduleController = require("../controllers/schedule.controllers")
 router.post("/ticket/schedule", scheduleController.findSchedule)
 
 //recomendation
-router.get("/ticket/schedule/recomendation", scheduleController.mostPurchaseSchedule)
+// router.get("/ticket/schedule/recomendation", scheduleController.mostPurchaseSchedule)
 
 module.exports = router

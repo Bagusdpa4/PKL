@@ -176,5 +176,5 @@ function calculateTotalPassengers(passenger) {
 
 module.exports = {
     findSchedule,
-    mostPurchaseSchedule
+    // mostPurchaseSchedule
 }
