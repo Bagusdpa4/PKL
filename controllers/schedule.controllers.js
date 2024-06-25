@@ -6,7 +6,7 @@ const pagination = require("../utils/pagination")
 const jsonResponse = require("../utils/response")
 const { ResponseError } = require("../error/response_error")
 const { validate } = require("../validation/validation")
-const { scheduleValidation } = require("../validation/schedule_validatiion")
+const { scheduleValidation } = require("../validation/schedule_validation")
 
 const findSchedule = async (req, res, next) => {
     try {

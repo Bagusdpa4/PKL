@@ -1,6 +1,6 @@
 const { PrismaClient, Prisma } = require("@prisma/client");
 const { validate } = require("../validation/validation");
-const { scheduleValidation } = require("../validation/schedule_validatiion");
+const { scheduleValidation } = require("../validation/schedule_validation");
 const prisma = new PrismaClient()
 
 const getDataFind = async ({ city_arrive_id, city_destination_id, date_flight, seat_class, order = true, price_from, price_to, time_from, time_to, skip = 0, take = 5 }) => {
