@@ -19,6 +19,8 @@ tags:
     description: Operations about Destination
   - name: "Order"
     description: Operations about Order
+  - name: "Notification"
+    description: Operations about Notification
 paths:
   /users/register:
     post:
@@ -1618,6 +1620,63 @@ paths:
                     example: "Order not found"
                   data:
                     example: ~
+      security:
+        - bearerAuth: []
+
+  /notifications:
+    get:
+      tags:
+        - "Notification"
+      summary: Get All notification
+      description: Get All notification
+      parameters:
+        - in: query
+          name: find
+          schema:
+            type: string
+          description: Search notification by title
+        - in: query
+          name: filter
+          schema:
+            type: string
+          description: Filter notification by title ('welcome', 'password', 'order', 'payment', 'notification').
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Notifications retrieved successfully
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        title:
+                          type: string
+                          example: Password Updated!
+                        message:
+                          type: string
+                          example: Your password has been updated successfully!
+                        isRead:
+                          type: boolean
+                          example: false
+                        createdAt:
+                          type: string
+                          example: 2024-05-26T14:20:18.724Z
+                        user_id:
+                          type: integer
+                          example: 1
       security:
         - bearerAuth: []
 
