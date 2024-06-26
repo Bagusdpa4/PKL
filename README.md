@@ -4,3 +4,6 @@
 ```bash
 npx prisma db seed
 ```
+
+
+## ERD
