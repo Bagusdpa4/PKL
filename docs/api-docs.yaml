@@ -1709,6 +1709,68 @@ paths:
       security:
         - bearerAuth: []
 
+  /notification/markAsRead/{notificationId}:
+    put:
+      tags:
+        - "Notification"
+      summary: "Mark a specific notification as read"
+      description: "Marks a specific notification as read for the logged-in user, identified by the notification ID."
+      parameters:
+        - in: path
+          name: notificationId
+          required: true
+          schema:
+            type: integer
+          description: "The ID of the notification to mark as read"
+      responses:
+        200:
+          description: "Notification marked as read successfully"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Notification marked as read"
+                  data:
+                    $ref: "#/components/schemas/Notification"
+        400:
+          description: "Notification ID is required"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Notification ID is required"
+                  data:
+                    example: null
+        404:
+          description: "Notification not found"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Notification not found"
+                  data:
+                    example: null
+      security:
+        - bearerAuth: []
+
 components:
   securitySchemes:
     bearerAuth:
@@ -1968,6 +2030,29 @@ components:
           type: string
           format: date-time
           example: "2024-05-25T14:20:18.724Z"
+        user_id:
+          type: integer
+          example: 1
+
+    Notification:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        title:
+          type: string
+          example: Notification
+        message:
+          type: string
+          example: Promotions Is Coming.
+        isRead:
+          type: boolean
+          example: false
+        createdAt:
+          type: string
+          format: date-time
+          example: "2024-05-26T14:20:18.724Z"
         user_id:
           type: integer
           example: 1
