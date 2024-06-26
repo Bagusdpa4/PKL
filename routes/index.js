@@ -16,6 +16,7 @@ const continentRoute = require("./continent.routes")
 const Country = require("./country.routes")
 const Plane = require("./plane.routes")
 const Order = require("./order.routes")
+const Payments = require("./payment.routes")
 const Notifications = require("./notif.routes")
 
 const swagger_path = path.resolve(__dirname, "../docs/api-docs.yaml");
@@ -42,6 +43,7 @@ router.use("/api/v1", continentRoute)
 router.use("/api/v1", Country)
 router.use("/api/v1", Plane)
 router.use("/api/v1", Order)
+router.use("/api/v1", Payments)
 router.use("/api/v1", Notifications)
 
 module.exports = router;
