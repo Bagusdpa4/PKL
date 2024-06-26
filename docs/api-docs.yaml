@@ -1680,6 +1680,35 @@ paths:
       security:
         - bearerAuth: []
 
+  /notifications/markAsRead/all:
+    put:
+      tags:
+        - "Notification"
+      summary: Mark all notifications as read
+      description: Marks all notifications as read for the logged-in user.
+      responses:
+        "200":
+          description: Notifications marked as read successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Notifications marked as read for the user
+                  data:
+                    type: object
+                    properties:
+                      count:
+                        type: integer
+                        example: 2
+      security:
+        - bearerAuth: []
+
 components:
   securitySchemes:
     bearerAuth:
