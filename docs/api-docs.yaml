@@ -19,6 +19,8 @@ tags:
     description: Operations about Destination
   - name: "Order"
     description: Operations about Order
+  - name: "Payment"
+    description: Operations about Payment
   - name: "Notification"
     description: Operations about Notification
 paths:
@@ -1623,6 +1625,205 @@ paths:
       security:
         - bearerAuth: []
 
+  /payment/{orderId}:
+    post:
+      tags:
+        - "Payment"
+      summary: Create a payment for an order
+      description: Creates a payment record for an order and updates the order status to 'PAID'.
+      parameters:
+        - in: path
+          name: orderId
+          required: true
+          schema:
+            type: integer
+          description: The ID of the order for which the payment is being made
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                method_payment:
+                  type: string
+                  example: "credit_card"
+      responses:
+        201:
+          description: Payment created and order updated successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/PaymentResponse"
+                  - type: object
+                    properties:
+                      originalPrice:
+                        type: string
+                        example: 2500000
+                      totalPrice:
+                        type: string
+                        example: 2775000
+
+        400:
+          description: Bad request, missing or invalid fields
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Payment method is required"
+        404:
+          description: Order not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Order not found"
+      security:
+        - bearerAuth: []
+
+  /payment/midtrans/{orderId}:
+    post:
+      tags:
+        - "Payment"
+      summary: Create a payment midtrans for an order
+      description: Creates a payment midtrans record for an order and updates the order status to 'PAID'.
+      parameters:
+        - in: path
+          name: orderId
+          required: true
+          schema:
+            type: integer
+          description: The ID of the order for which the payment is being made
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                method_payment:
+                  type: string
+                  example: "credit_card"
+      responses:
+        201:
+          description: Midtrans payment initiated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Midtrans payment initiated successfully
+                  data:
+                    type: object
+                    properties:
+                      token:
+                        type: string
+                        example: e5457899-d4f1-457b-8a60-cf3ee16f44e1
+                      redirect_url:
+                        type: string
+                        example: https://app.sandbox.midtrans.com/snap/v4/redirection/e5457899-d4f1-457b-8a60-cf3ee16f44e1
+
+        400:
+          description: Bad request, missing or invalid fields
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Payment method is required"
+        404:
+          description: Order not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Order not found"
+      security:
+        - bearerAuth: []
+
+  /payments:
+    get:
+      tags:
+        - "Payment"
+      summary: Retrieve all payments
+      description: Retrieves a list of all payments made by authenticated users.
+      responses:
+        200:
+          description: Successfully retrieved all payments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PaymentResponse"
+      security:
+        - bearerAuth: []
+
+  /payment/{paymentId}:
+    get:
+      tags:
+        - "Payment"
+      summary: Retrieve a specific payment
+      description: Retrieve details of a specific payment by payment ID.
+      parameters:
+        - in: path
+          name: paymentId
+          required: true
+          schema:
+            type: integer
+          description: The ID of the payment to retrieve
+      responses:
+        200:
+          description: Successfully retrieved the payment
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DetailPaymentResponse"
+        404:
+          description: Payment not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Payment not found"
+      security:
+        - bearerAuth: []
+
   /notifications:
     get:
       tags:
@@ -1825,6 +2026,37 @@ components:
           type: string
           example: user
 
+    BasicFlightInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        flight_number:
+          type: string
+          example: "sup-570725"
+        time_arrive:
+          type: string
+          format: date-time
+          example: "1970-01-01T15:30:00.000Z"
+        time_departure:
+          type: string
+          format: date-time
+          example: "1970-01-01T05:00:00.000Z"
+        date_flight:
+          type: string
+          format: date-time
+          example: "2024-05-25T00:00:00.000Z"
+        estimation_minute:
+          type: integer
+          example: 240
+        city_arrive_id:
+          type: integer
+          example: 1
+        city_destination_id:
+          type: integer
+          example: 2
+
     FlightSchedule:
       type: object
       properties:
@@ -1877,37 +2109,6 @@ components:
         city_destination:
           $ref: "#/components/schemas/City"
 
-    BasicFlightInfo:
-      type: object
-      properties:
-        id:
-          type: integer
-          example: 1
-        flight_number:
-          type: string
-          example: "sup-570725"
-        time_arrive:
-          type: string
-          format: date-time
-          example: "1970-01-01T15:30:00.000Z"
-        time_departure:
-          type: string
-          format: date-time
-          example: "1970-01-01T05:00:00.000Z"
-        date_flight:
-          type: string
-          format: date-time
-          example: "2024-05-25T00:00:00.000Z"
-        estimation_minute:
-          type: integer
-          example: 240
-        city_arrive_id:
-          type: integer
-          example: 1
-        city_destination_id:
-          type: integer
-          example: 2
-
     Plane:
       type: object
       properties:
@@ -1949,19 +2150,6 @@ components:
           type: string
           example: Indoensia
 
-    Continent:
-      type: object
-      properties:
-        id:
-          type: integer
-          example: 1
-        name:
-          type: string
-          example: Asia
-        code:
-          type: string
-          example: AS
-
     Country:
       type: object
       properties:
@@ -1977,6 +2165,19 @@ components:
         continent_id:
           type: integer
           example: 1
+
+    Continent:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Asia
+        code:
+          type: string
+          example: AS
 
     Passenger:
       type: object
@@ -2033,6 +2234,67 @@ components:
         user_id:
           type: integer
           example: 1
+
+    PaymentResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        amount:
+          type: string
+          example: "1500000"
+        method_payment:
+          type: string
+          example: "credit_card"
+        createdAt:
+          type: string
+          format: date-time
+          example: "2024-05-25T14:20:18.724Z"
+        order_id:
+          type: integer
+          example: 1
+
+    DetailPaymentResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        amount:
+          type: string
+          example: "1500000"
+        method_payment:
+          type: string
+          example: "credit_card"
+        createdAt:
+          type: string
+          format: date-time
+          example: "2024-05-25T14:20:18.724Z"
+        order_id:
+          type: integer
+          example: 1
+        ordersId:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            status:
+              type: string
+              example: paid
+            code:
+              type: string
+              example: muhxV5Li
+            detail_flight_id:
+              type: integer
+              example: 2
+            expired_date:
+              type: string
+              example: 2024-06-03T13:28:14.904Z
+            user_id:
+              type: integer
+              example: 1
 
     Notification:
       type: object
