@@ -2,10 +2,12 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { JWT_SECRET_KEY } = process.env;
+const { JWT_SECRET_KEY, FRONT_END_URL, URL_RESET_PASS } = process.env;
 const { generatedOTP } = require("../utils/otpGenerator");
 const nodemailer = require("../utils/nodemailer");
-const { formatDateToUTC, formatDateTimeToUTC } = require("../utils/formattedDate");
+const { formatDateToUTC, formatDateTimeToUTC, utcTimePlus7 } = require("../utils/formattedDate");
+const { date } = require("joi");
+const axios = require('axios');
 
 module.exports = {
   register: async (req, res, next) => {
@@ -19,7 +21,6 @@ module.exports = {
       const exist = await prisma.user.findUnique({
         where: { email },
       });
-
       // Validate required fields
       if (!fullname || !email || !phoneNumber || !password) {
         return res.status(400).json({
@@ -27,7 +28,6 @@ module.exports = {
           message: "Input must be required",
           data: null,
         });
-        
       } else if (exist) {
         return res.status(401).json({
           status: false,
@@ -55,11 +55,11 @@ module.exports = {
       }
 
       // Validate phone number length
-      if (phoneNumber.length < 10 || phoneNumber.length > 13) {
+      if (phoneNumber.length < 10 || phoneNumber.length > 12) {
         return res.status(400).json({
           status: false,
           message:
-            "Invalid phone number length. It must be between 10 and 13 characters.",
+            "Invalid phone number length. It must be between 10 and 12 characters.",
           data: null,
         });
       }
@@ -92,7 +92,7 @@ module.exports = {
         },
       });
       delete user.password;
-      user.otpCreatedAt = formatDateTimeToUTC(user.otpCreatedAt);
+      user.otpCreatedAt = formatDateTimeToUTC(user.otpCreatedAt)
 
       // Send email verification OTP
       const html = await nodemailer.getHTML("otp.ejs", { email, otp });
@@ -103,7 +103,7 @@ module.exports = {
         data: {
           title: "Welcome",
           message: "Your account has been created successfully.",
-          createdAt: new Date().toISOString(),
+          createdAt: utcTimePlus7().toISOString(),
           user: { connect: { id: user.id } },
         },
       });
@@ -143,7 +143,7 @@ module.exports = {
       if (!user.password && user.google_id) {
         return res.status(401).json({
           status: false,
-          message: "Authentication failed. Please use Google OAuth to log in",
+          message: 'Authentication failed. Please use Google OAuth to log in',
           data: null,
         });
       }
@@ -169,7 +169,7 @@ module.exports = {
 
       delete user.password;
       const token = jwt.sign(user, JWT_SECRET_KEY);
-      user.otpCreatedAt = formatDateTimeToUTC(user.otpCreatedAt);
+      user.otpCreatedAt = formatDateTimeToUTC(user.otpCreatedAt)
 
       return res.status(201).json({
         status: true,
@@ -183,6 +183,15 @@ module.exports = {
   verifyOtp: async (req, res, next) => {
     try {
       const { email, otp } = req.body;
+
+      // Pastikan email tidak undefined
+      if (!email) {
+        return res.status(400).json({
+          status: false,
+          message: "Email is required",
+          data: null,
+        });
+      }
 
       // Set OTP expired at 2 minutes
       const otpExpired = 2 * 60 * 1000;
@@ -209,7 +218,9 @@ module.exports = {
       }
 
       // Set Expired otp
-      const currentTime = new Date();
+      // const currentTime = new Date();
+      const currentTime = utcTimePlus7()
+
       const isExpired = currentTime - user.otpCreatedAt > otpExpired;
 
       if (isExpired) {
@@ -298,7 +309,7 @@ module.exports = {
 
       const html = await nodemailer.getHTML("link-reset.ejs", {
         name: user.fullname,
-        url: `${req.protocol}://${req.get("host")}/reset-password?token=${token}`
+        url: `${URL_RESET_PASS}?token=${token}`
       });
 
       await nodemailer.sendMail(email, "Password Reset Request", html);
@@ -316,8 +327,6 @@ module.exports = {
     try {
       const { token } = req.query;
       const { password, passwordConfirmation } = req.body;
-      const passwordValidator =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,12}$/;
 
       if (!password || !passwordConfirmation) {
         return res.status(400).json({
@@ -332,15 +341,6 @@ module.exports = {
           status: false,
           message:
             "Please ensure that the password and password confirmation match!",
-          data: null,
-        });
-      }
-
-      if (!passwordValidator.test(password)) {
-        return res.status(400).json({
-          status: false,
-          message:
-            "Invalid password format. It must contain at least 1 lowercase, 1 uppercase, 1 digit number, 1 symbol, and be between 8 and 12 characters long.",
           data: null,
         });
       }
@@ -369,7 +369,7 @@ module.exports = {
           data: {
             title: "Password",
             message: "Your password has been updated successfully!",
-            createdAt: new Date().toISOString(),
+            createdAt: utcTimePlus7().toISOString(),
             user: { connect: { id: updateUser.id } },
           },
         });
@@ -395,14 +395,80 @@ module.exports = {
       next(error);
     }
   },
-  googleOauth2: (req, res) => {
+  googleOauth2: async (req, res) => {
+    const user = req.user;
     let token = jwt.sign({ id: req.user.id, password: null }, JWT_SECRET_KEY);
 
-    res.json({
-      status: true,
-      message: "OK",
-      err: null,
-      data: { user: req.user, token },
+    const userExist = await prisma.user.findUnique({
+      where: { id: req.user.id },
     });
+
+    const redirectUrl = `${FRONT_END_URL}/?token=${token}`;
+
+    return res.redirect(redirectUrl);
+  },
+  LoginGoogle: async (req, res, next) => {
+    try {
+      // Destructures 'access_token' from the request body
+      const { access_token } = req.body;
+
+      if (!access_token) {
+        return res.status(400).json({
+          status: false,
+          message: 'Missing required field',
+          data: null,
+        });
+      }
+
+      // Gets Google user data using the access token
+      const googleData = await axios.get(
+        `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${access_token}`
+      );
+
+      // Extracts the full name and family name from the Google data
+      const fullName = googleData?.data?.name;
+      const nameParts = fullName.split(' ');
+      const familyName = nameParts.length > 1 ? nameParts.pop() : '';
+      const firstName = nameParts.join(' ');
+
+      // Upserts user data in case the user already exists in the database
+      const user = await prisma.user.upsert({
+        where: {
+          email: googleData?.data?.email, // Uses the email from the Google data as a unique identifier
+        },
+        update: {
+          fullname: firstName, // Updates the user's full name if they already exist
+          family_name: familyName, // Updates the user's family name if they already exist
+          google_id: googleData?.data?.sub, // Updates the user's Google ID
+          isVerified: true, // Ensures the email is marked as verified
+        },
+        create: {
+          email: googleData?.data?.email,
+          fullname: firstName,
+          family_name: familyName,
+          password: '',
+          isVerified: true,
+          google_id: googleData?.data?.sub,
+        },
+      });
+
+      // Deletes the user's password from the user object for security reasons
+      delete user.password;
+
+      // Creates a JWT token for the user
+      const token = jwt.sign(user, JWT_SECRET_KEY);
+
+      // Returns a successful response with the user data and token
+      return res.status(200).json({
+        status: true,
+        message: 'Successfully login with Google',
+        data: {
+          user,
+          token,
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
   },
 };

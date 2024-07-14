@@ -7,7 +7,9 @@ const {
   PAYMENT_PROD_CLIENT_KEY,
   PAYMENT_PROD_SERVER_KEY,
 } = process.env;
-const { convertToIso, formatDateTimeToUTC } = require('../utils/formattedDate');
+const { convertToIso, formatDateTimeToUTC, utcTimePlus7 } = require('../utils/formattedDate');
+const paginationReq = require("../utils/pagination");
+const jsonResponse = require("../utils/response");
 
 // Setup Midtrans client
 const isProduction = false;
@@ -45,11 +47,17 @@ module.exports = {
         });
       }
 
-      // Check if the order is already paid
       if (order.status === "paid") {
         return res.status(400).json({
           status: false,
           message: "Order has already been paid",
+        });
+      }
+
+      if (order.status === "cancelled") {
+        return res.status(400).json({
+          status: false,
+          message: "Order has been cancelled and cannot be paid",
         });
       }
 
@@ -96,7 +104,7 @@ module.exports = {
         data: {
           amount: totalAmount.toString(),
           method_payment,
-          createdAt: new Date().toISOString(),
+          createdAt: utcTimePlus7().toISOString(),
           order_id: orderId,
         },
       });
@@ -122,7 +130,7 @@ module.exports = {
         data: {
           title: "Payment",
           message: `Your order with booking code ${order.code} is currently Paid. Enjoy you're Flight`,
-          createdAt: new Date().toISOString(),
+          createdAt: utcTimePlus7().toISOString(),
           user: { connect: { id: req.user.id } },
         },
       });
@@ -132,16 +140,27 @@ module.exports = {
   },
   index: async (req, res, next) => {
     try {
-      const payments = await prisma.payment.findMany();
+      const { page } = req.query;
+      let pagination = paginationReq.paginationPage(Number(page), 10);
+
+      const payments = await prisma.payment.findMany({
+        take: pagination.take, skip: pagination.skip
+      });
+
+      const totalData = await prisma.payment.count();
+      const totalPage = Math.ceil(totalData / pagination.take);
 
       payments.forEach(value => {
         value.createdAt = formatDateTimeToUTC(value.createdAt)
-      })
+      });
 
-      res.status(200).json({
-        status: true,
+      return jsonResponse(res, 200, {
         message: "All payments retrieved successfully",
         data: payments,
+        page: Number(page) ?? 1,
+        perPage: payments.length,
+        pageCount: totalPage,
+        totalCount: totalData,
       });
     } catch (error) {
       next(error);
@@ -225,6 +244,14 @@ module.exports = {
         });
       }
 
+      if (order.status === "cancelled") {
+        return res.status(400).json({
+          status: false,
+          message: "Order has been cancelled and cannot be paid",
+          data: null,
+        });
+      }
+
       const totalAmount = order.detailFlight.price * (1 + 0.11); // Including 11% VAT (PPN 11%)
 
       // Define payment parameters for Midtrans API
@@ -241,6 +268,11 @@ module.exports = {
           email: order.user.email,
           phone: order.user.phone,
         },
+        // callback_url: {
+        //   finish: `https://flynowfoundation.my.id/paymentOrder`,
+        //   cancel: ``,
+        //   pending: ``,
+        // },
       };
 
       // Charge the transaction using Midtrans API
@@ -307,7 +339,7 @@ module.exports = {
             order_id: Number(orderId),
             amount: gross_amount,
             method_payment: payment_type,
-            createdAt: new Date().toISOString(),
+            createdAt: utcTimePlus7().toISOString(),
           },
         });
 
@@ -326,7 +358,7 @@ module.exports = {
           data: {
             title: "Payment",
             message: `Your order with booking code ${order.code} is currently Paid. Enjoy you're Flight.`,
-            createdAt: new Date().toISOString(),
+            createdAt: utcTimePlus7().toISOString(),
             user: { connect: { id: updatedOrder.user_id } },
           },
         });

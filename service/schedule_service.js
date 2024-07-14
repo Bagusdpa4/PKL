@@ -94,7 +94,7 @@ const countDataFind = async ({ city_arrive_id, city_destination_id, date_flight,
     return Number(result[0].total);
 }
 
-let getDetailFlightByFlightId = async (flightId) => {
+const getDetailFlightByFlightId = async (flightId) => {
     return await prisma.detailFlight.findMany({
         where: {
             flight_id: flightId
@@ -121,7 +121,7 @@ let getDetailFlightByFlightId = async (flightId) => {
     })
 }
 
-let getDetailFlightById = async (detailFlightId) => {
+const getDetailFlightById = async (detailFlightId) => {
     return await prisma.detailFlight.findUnique({
         where: {
             id: detailFlightId
@@ -152,7 +152,7 @@ let getDetailFlightById = async (detailFlightId) => {
 }
 
 
-let getDetailFlight = async () => {
+const getDetailFlight = async () => {
     return await prisma.detailFlight.findMany({
         select: {
             id: true,
@@ -198,11 +198,54 @@ const createSchedule = async (flightData) => {
 
 }
 
+
+const createFligth = async ({ date_flight,
+    estimation_minute,
+    flight_number,
+    time_arrive,
+    time_departure,
+    city_arrive_id,
+    city_destination_id,
+    discount }) => {
+    try {
+        return await prisma.flight.create({
+            data: {
+                date_flight,
+                estimation_minute,
+                flight_number,
+                time_arrive,
+                time_departure,
+                city_arrive_id,
+                city_destination_id,
+                discount,
+            }
+        })
+    } catch (error) {
+        throw error
+    }
+}
+
+
+const createDetailFligth = async ({ price, detail_plane_id, flight_id }) => {
+    try {
+        return await prisma.detailFlight.create({
+            data: {
+                price, detail_plane_id, flight_id
+            }
+        })
+    } catch (error) {
+        throw error
+    }
+}
+
+
 module.exports = {
     getDataFind,
     countDataFind,
     createSchedule,
     getDetailFlightById,
     getDetailFlight,
-    getDetailFlightByFlightId
+    getDetailFlightByFlightId,
+    createFligth,
+    createDetailFligth
 }

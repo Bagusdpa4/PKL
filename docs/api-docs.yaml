@@ -161,7 +161,7 @@ paths:
                 email:
                   type: string
                   format: email
-                  example: sugab.dwi88@gmail.com
+                  example: flynowb6@gmail.com
                 otp:
                   type: string
                   example: 123456
@@ -246,7 +246,7 @@ paths:
                 email:
                   type: string
                   format: email
-                  example: sugab.dwi88@gmail.com
+                  example: flynowb6@gmail.com
 
       responses:
         200:
@@ -296,7 +296,7 @@ paths:
                 email:
                   type: string
                   format: email
-                  example: sugab.dwi88@gmail.com
+                  example: flynowb6@gmail.com
 
       responses:
         200:
@@ -349,10 +349,10 @@ paths:
               properties:
                 password:
                   type: string
-                  example: Bagusdpa04#
+                  example: FlynowB6#
                 passwordConfirmation:
                   type: string
-                  example: Bagusdpa04#
+                  example: FlynowB6#
 
       responses:
         200:
@@ -476,64 +476,86 @@ paths:
       security:
         - bearerAuth: []
 
-  /users/google:
-    get:
+  /users/loginGoogle:
+    post:
       tags:
-        - Users
-      operationId: get-login-user-with-google
-      summary: Initiate Google OAuth 2.0 Authentication
-      description: Redirects the user to Google for authentication.
-      security:
-        - google_oauth: []
-      responses:
-        "302":
-          description: Redirect to Google for authentication.
+        - "Users"
+      summary: Login by Google
+      description: Login by Google by Access Token (Google Playground -> OAuth2 -> userinfo.email and userinfo.profile checked)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                access_token:
+                  type: string
+                  example: ya29.a0AXooCgsJUw2LZB7y5pTKZK7NPEUM7ehfBs-6AaF6Jj3MsOPT1ih4NoemDxDBR2KETaS2YulZ62IuPcmtsE_04vOfsL85qhdKFysCDunvrGAdwh68huXM7_42leXW0tlKlk4hWO64nYNYqsJjVoYvaKCEVfqP-TOBmCDOaCgYKAVMSARISFQHGX2Mixra-LLm6wRoWlIQNS_wAyw0171
 
-  /users/google/callback:
-    get:
-      tags:
-        - Users
-      operationId: get-login-user-with-google-callback
-      summary: Google OAuth 2.0 Callback
-      description: Handles the callback after successful Google authentication.
-      parameters:
-        - name: code
-          in: query
-          required: true
-          description: Authorization code received from Google.
-          schema:
-            type: string
       responses:
-        "200":
-          description: Successful operation
+        200:
+          description: Success
           content:
             application/json:
               schema:
-                allOf:
-                  - type: object
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Successfully login with Google
+                  data:
+                    type: object
                     properties:
-                      status:
-                        type: boolean
-                        example: true
-                      message:
-                        type: string
-                        example: "success"
-                  - type: object
-                    properties:
-                      err:
-                        type: string
-                        example: null
-                      data:
+                      user:
                         type: object
                         properties:
-                          user:
-                            allOf:
-                              - $ref: "#/components/schemas/UserResponse"
-                              - type: object
-                                properties:
-                                  token:
-                                    type: integer
-                                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZnVsbG5hbWUiOiJCYWd1cyBEd2kgUHV0cmEgQWRpeW9ubyIsImZhbWlseV9uYW1lIjpudWxsLCJlbWFpbCI6InN1Z2FiLmR3aTg4QGdtYWlsLmNvbSIsInBob25lTnVtYmVyIjoiMDgyMjI5NzQ5NDYyIiwiYXZhdGFyX3VybCI6bnVsbCwiZ29vZ2xlX2lkIjpudWxsLCJvdHAiOiI2NjI1NDMiLCJvdHBDcmVhdGVkQXQiOiIyMDI0LTA1LTI0VDE2OjEzOjU2LjA4OFoiLCJpc1ZlcmlmaWVkIjp0cnVlLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNjU2NzI1OH0._tBfHd_s_J9UWnblX_tHjnTmmt5b2PdXpvekhjHRXF0
+                          id:
+                            type: string
+                            example: 7e775854-aad8-4ad5-89f1-09b7b3481ba3
+                          name:
+                            type: string
+                            example: John Doe
+                          email:
+                            type: string
+                            example: example@gmail.com
+                          is_verified:
+                            type: boolean
+                            example: true
+                          role:
+                            type: string
+                            example: USER
+                          createdAt:
+                            type: string
+                            format: datetime
+                            example: "2024-05-29T15:20:20.554Z"
+                          updatedAt:
+                            type: string
+                            format: datetime
+                            example: "2024-05-29T15:20:20.554Z"
+
+                      token:
+                        type: string
+                        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdlNzc1ODU0LWFhZDgtNGFkNS04OWYxLTA5YjdiMzQ4MWJhMyIsIm5hbWUiOiJEZXdhbmdnYSBOYW5kYSBBcmp1bmEiLCJlbWFpbCI6ImFkZXdhbmdnYW5AZ21haWwuY29tIiwiaXNfdmVyaWZpZWQiOnRydWUsInJvbGUiOiJVU0VSIiwiY3JlYXRlZEF0IjoiMjAyNC0wNS0yOVQxNToyMDoyMC41NTRaIiwidXBkYXRlZEF0IjoiMjAyNC0wNS0yOVQxNToyMDoyMC41NTRaIiwiaWF0IjoxNzE2OTk2MDIwfQ.pz1Ilx4MRkMDrpt-ol5FIoTjP4U1f_Z-WOn_yTg-CDw
+
+        400:
+          description: Input must be required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Missing required field
+                  data:
+                    example: ~
 
   /profile:
     get:
@@ -1022,10 +1044,49 @@ paths:
                     type: string
                     example: "Flight not found"
 
+  /ticket/schedule/category:
+    get:
+      tags:
+        - "Ticket"
+      summary: Get category ticket flight recomendation
+      description: Get category ticket flight recomendation.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Indicates the success status of the request
+                  message:
+                    type: string
+                    description: Human-readable message regarding the request status
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: ID of the recommendation
+                        city_destination:
+                          type: string
+                          description: City destination for the recommendation
+
   /ticket/schedule/recomendation:
     get:
       tags:
         - "Ticket"
+      parameters:
+        - in: path
+          name: category_id
+          required: true
+          schema:
+            type: integer
+          description: The ID of the category to retrieve
       summary: Get ticket flight recomendation
       description: Get ticket flight recomendation by count order flight.
       responses:

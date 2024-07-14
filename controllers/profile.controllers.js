@@ -1,9 +1,9 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
-const { formatDateTimeToUTC } = require("../utils/formattedDate");
 const imageKit = require("../libs/imagekit");
 const multer = require("../libs/multer").image;
 const bcrypt = require("bcrypt");
+const { formatDateTimeToUTC } = require("../utils/formattedDate");
 
 module.exports = {
   getDetail: async (req, res, next) => {
@@ -27,7 +27,6 @@ module.exports = {
       delete user.password;
       user.otpCreatedAt = formatDateTimeToUTC(user.otpCreatedAt)
 
-      console.log(user.otpCreatedAt);
 
       res.status(200).json({
         status: true,
@@ -51,26 +50,6 @@ module.exports = {
       try {
         let userId = req.user.id;
         let { fullname, phoneNumber } = req.body;
-
-        // Validate phone number format
-        if (!/^\d+$/.test(phoneNumber)) {
-          return res.status(400).json({
-            status: false,
-            message:
-              "Invalid phone number format. It must contain only numeric characters.",
-            data: null,
-          });
-        }
-
-        // Validate phone number length
-        if (phoneNumber.length < 10 || phoneNumber.length > 13) {
-          return res.status(400).json({
-            status: false,
-            message:
-              "Invalid phone number length. It must be between 10 and 13 characters.",
-            data: null,
-          });
-        }
 
         let existingUser = await prisma.user.findUnique({
           where: {

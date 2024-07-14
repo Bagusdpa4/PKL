@@ -117,13 +117,16 @@ const findSchedule = async (req, res, next) => {
     }
 }
 
-const mostPurchaseSchedule = async (req, res, next) => {
-    const { continent } = req.query
-    let isContinent = false
+const allRecomendation = async (req, res, next) => {
+    const { category_id } = req.query
+    const city = category_id
+    let isCity = false
     let data
-    if (continent != null) {
-        isContinent = true
-        data = await orderService.getDataForRecomendationByContinent(Number(continent))
+    if (city != null) {
+        isCity = true
+        // data = await orderService.getDiscountDataForRecomendationByCity(Number(city))
+        // console.log(data)
+        data = await orderService.getDataForRecomendationByCity(Number(city))
     } else {
         data = await orderService.getDataForRecomendation()
     }
@@ -136,21 +139,22 @@ const mostPurchaseSchedule = async (req, res, next) => {
 
     data = data.slice(0, 5)
 
-    // for (let item of data) {
-    //     item = await scheduleService.getDetailFlightById(item.detail_flight_id);
-    //     delete item.detail_flight_id
-    //     delete item.order_count
-    // }
 
     data = await Promise.all(data.map(async (item) => {
         return await scheduleService.getDetailFlightById(item.detail_flight_id)
 
     }))
 
-    if (data.length == 0 && !isContinent) {
+    if (data.length == 0 && !isCity) {
         data = await scheduleService.getDetailFlight()
     }
 
+    const baseUrl = `${req.protocol}://${req.headers.host}/api/v1/image?city=`;
+
+    data.forEach(item => {
+        const cityName = item.flight.city_destination.name.toLowerCase();
+        item.image_url = `${baseUrl}${cityName}`;
+    });
 
     if (!data) {
         return jsonResponse(res, 400, {
@@ -174,7 +178,27 @@ function calculateTotalPassengers(passenger) {
 
 
 
+async function getCategoryRecomendation(req, res, next) {
+    try {
+        let result = await orderService.orderRecomendationByCity()
+        result.forEach((value) => {
+            delete value.order_count
+            value.id = Number(value.id)
+        });
+
+        return jsonResponse(res, 200, {
+            status: true,
+            message: "success retrive category recomendation",
+            data: result
+        })
+    } catch (err) {
+        next(err)
+    }
+}
+
+
 module.exports = {
     findSchedule,
-    mostPurchaseSchedule
+    allRecomendation,
+    getCategoryRecomendation
 }

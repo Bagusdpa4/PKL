@@ -1,16 +1,29 @@
 const { PrismaClient } = require("@prisma/client");
 const { formatTimeToUTC, formatDateToUTC } = require("../utils/formattedDate");
 const prisma = new PrismaClient();
+const paginationReq = require("../utils/pagination");
+const jsonResponse = require("../utils/response");
 
 module.exports = {
   getAllFlights: async (req, res, next) => {
     try {
-      const flights = await prisma.flight.findMany();
+      const { page } = req.query;
+      let pagination = paginationReq.paginationPage(Number(page), 10);
 
-      res.status(200).json({
-        status: true,
+      const flights = await prisma.flight.findMany({
+        take: pagination.take, skip: pagination.skip
+      });
+
+      const totalData = await prisma.flight.count();
+      const totalPage = Math.ceil(totalData / pagination.take);
+
+      return jsonResponse(res, 200, {
         message: "All flights retrieved successfully",
         data: flights,
+        page: Number(page) ?? 1,
+        perPage: flights.length,
+        pageCount: totalPage,
+        totalCount: totalData,
       });
     } catch (error) {
       next(error);

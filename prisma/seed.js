@@ -10,6 +10,7 @@ const citySeed = require('./seeder/cities_seed')
 const seatClassSeed = require('./seeder/seat_class_seed')
 const scheduleSeed = require('./seeder/schedule_seed')
 const detailPlaneSeed = require('./seeder/detail_plane_seed')
+const userAdmin = require('./seeder/user_seed')
 
 async function main() {
     await rollbackSeed()
@@ -21,7 +22,8 @@ async function main() {
     await seatClassSeed(prisma)
     await detailPlaneSeed(prisma)
     await scheduleSeed(prisma)
-    
+    // await userAdmin(prisma)
+
 }
 
 main()

@@ -1,7 +1,7 @@
-const fs = require("fs")
+const fs = require("fs");
+const { checkDateLater } = require("../../utils/formattedDate");
 
 async function scheduleSeed(prisma) {
-    let dateNow = new Date()
     const rawData = fs.readFileSync('./assets/core/schedule_seed_data.json');
     const data = JSON.parse(rawData);
     try {
@@ -14,7 +14,7 @@ async function scheduleSeed(prisma) {
                     flight_number: v.flight_number + i,
                     time_arrive: new Date(v.time_arrive),
                     time_departure: new Date(v.time_departure),
-                    date_flight: checkDate(i),
+                    date_flight: checkDateLater(i),
                     estimation_minute: v.estimation_minute,
                 };
 
@@ -34,24 +34,6 @@ async function scheduleSeed(prisma) {
         console.error('Error seeding schedule data:', error);
     }
 }
-function checkDate(daysLater) {
-    var now = new Date();
-    const totalDate = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
-    let day = now.getDate();
-    let dayLater = day + daysLater
-    let month = now.getMonth() + 1;
-    let year = now.getFullYear();
 
-
-    if (dayLater > totalDate) {
-        dayLater = dayLater - totalDate
-
-        let nextDate = new Date(year, (month - 1) + 1, dayLater);
-        return nextDate
-    }
-    nextDate = new Date(year, month - 1, dayLater);
-    return nextDate
-
-}
 
 module.exports = scheduleSeed;

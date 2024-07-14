@@ -1,39 +1,62 @@
+const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient()
+
 var cron = require("node-cron");
-const { createSchedule } = require("./schedule_service");
-const { getNextWeekDate } = require("../utils/formattedDate");
+const { getNextWeekDate, utcTimePlus7, convertToIso } = require("../utils/formattedDate");
+const { checkIsExecute } = require("./cron_upload_service");
 
-const data = {
-    "city_arrive_id": 1,
-    "city_destination_id": 2,
-    "flight_number": "sup-5707",
-    "time_arrive": "2024-05-24T15:30:00.000Z",
-    "time_departure": "2024-05-24T05:00:00.000Z",
-    "date_flight": "2024-05-",
-    "estimation_minute": 240,
-    "detail_data": [
-        {
-            "detail_plane_id": 1,
-            "price": 500000
-        },
-        {
-            "detail_plane_id": 2,
-            "price": 1000000
-        },
-        {
-            "detail_plane_id": 3,
-            "price": 1500000
-        },
-        {
-            "detail_plane_id": 4,
-            "price": 2500000
+const getCronScheduleData = async (hari) => {
+    const daysMap = [
+        'isSunday',
+        'isMonday',
+        'isThuesday',
+        'isWednesday',
+        'isThursday',
+        'isFriday',
+        'isSaturday'
+    ];
+
+    try {
+        if (hari >= 0 && hari < daysMap.length) {
+            const dayProperty = daysMap[hari];
+            const data = await prisma.cronJobSchedule.findMany({
+                where: {
+                    [dayProperty]: true
+                },
+                include: {
+                    detail_cron_Job_Schedul: true
+                }
+            });
+            return data;
+        } else {
+            return 'Hari tidak valid';
         }
-    ]
-}
+    } catch (error) {
+        console.error("Error fetching schedule data:", error);
+        throw error;
+    }
+};
 
-var task = cron.schedule('0 0 * * *', () => {
-    let pushdata = data
-    pushdata.date_flight = getNextWeekDate()
-    createSchedule(pushdata)
+
+
+var task = cron.schedule('1 * 0 * * *', async () => {
+    console.log("cron schedule runing")
+    try {
+        let now = utcTimePlus7()
+        now.setDate(now.getDate() + 7);
+        let hari = now.getDay();
+
+        let data = await getCronScheduleData(hari)
+
+        data.forEach(async (value) => {
+            let detailFlight = value.detail_cron_Job_Schedul
+            delete value.detail_cron_Job_Schedul
+            await checkIsExecute(now, value, detailFlight)
+        })
+    } catch (error) {
+        throw error
+    }
+
 }, { timezone: "Asia/Jakarta" });
 
 
