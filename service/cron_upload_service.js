@@ -1,5 +1,5 @@
 const { PrismaClient } = require("@prisma/client");
-const { createFlight, createDetailFlight, getAllFlights } = require("./schedule_service");
+const { createFlight, createDetailFlight } = require("./schedule_service");
 const { generateRandomString } = require("../utils/helper");
 const prisma = new PrismaClient()
 
@@ -78,7 +78,6 @@ const getCronSchedule = async () => {
 
 const checkIsExecute = async (now, value, detailValue) => {
     const createFlightWithDetails = async () => {
-        console.log("Creating flight with details for:", value);
         const data = await createFlight({
             flight_number: generateRandomString(6),
             city_arrive_id: value.city_arrive_id,
@@ -89,100 +88,61 @@ const checkIsExecute = async (now, value, detailValue) => {
             time_arrive: value.time_arrive,
             time_departure: value.time_departure
         });
-        console.log("Flight created:", data);
+
 
         for (let i = 0; i < detailValue.length; i++) {
-            console.log("Creating detail flight for:", detailValue[i]);
             await createDetailFlight({
                 detail_plane_id: detailValue[i].detail_plane_id,
                 flight_id: data.id,
                 price: detailValue[i].price
             });
         }
-    };
 
-    console.log("Checking execution for day:", now.getDay());
+
+    };
     switch (now.getDay()) {
         case 0:
             if (value.isSunday) {
-                console.log("Executing for Sunday");
                 await createFlightWithDetails();
             }
             break;
         case 1:
             if (value.isMonday) {
-                console.log("Executing for Monday");
                 await createFlightWithDetails();
             }
             break;
         case 2:
             if (value.isTuesday) {
-                console.log("Executing for Tuesday");
                 await createFlightWithDetails();
             }
             break;
         case 3:
             if (value.isWednesday) {
-                console.log("Executing for Wednesday");
                 await createFlightWithDetails();
             }
             break;
         case 4:
             if (value.isThursday) {
-                console.log("Executing for Thursday");
                 await createFlightWithDetails();
             }
             break;
         case 5:
             if (value.isFriday) {
-                console.log("Executing for Friday");
                 await createFlightWithDetails();
             }
             break;
         case 6:
             if (value.isSaturday) {
-                console.log("Executing for Saturday");
                 await createFlightWithDetails();
             }
             break;
     }
 }
 
-const addCronJobSchedule = async () => {
-    try {
-        const flights = await getAllFlights();
-        const daysOfWeek = ['isSunday', 'isMonday', 'isTuesday', 'isWednesday', 'isThursday', 'isFriday', 'isSaturday'];
-
-        for (let i = 0; i < 7; i++) {
-            const date = new Date();
-            date.setDate(date.getDate() + i);
-            const dayOfWeek = daysOfWeek[date.getDay()];
-
-            for (const flight of flights) {
-                const data = await prisma.cronJobSchedule.create({
-                    data: {
-                        flight_key: generateRandomString(6),
-                        time_arrive: flight.time_arrive,
-                        time_departure: flight.time_departure,  
-                        city_arrive_id: flight.city_arrive_id,
-                        city_destination_id: flight.city_destination_id,
-                        estimation_minute: flight.estimation_minute,
-                        discount: flight.discount,
-                        [dayOfWeek]: true,
-                    }
-                });
-                console.log(`Cron job schedule added for ${dayOfWeek}:`, data);
-            }
-        }
-    } catch (error) {
-        console.error("Error adding cron job schedule:", error);
-    }
-};
 
 module.exports = {
     createCronSchedule,
     createDetailCronSchedule,
     getCronSchedule,
-    checkIsExecute,
-    addCronJobSchedule
+    checkIsExecute
 }
