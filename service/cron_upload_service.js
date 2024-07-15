@@ -12,7 +12,7 @@ const createCronSchedule = async ({
     estimation_minute,
     discount,
     isMonday,
-    isThuesday,
+    isTuesday,
     isWednesday,
     isThursday,
     isFriday,
@@ -30,7 +30,7 @@ const createCronSchedule = async ({
                 estimation_minute,
                 discount,
                 isMonday,
-                isThuesday,
+                isTuesday,
                 isWednesday,
                 isThursday,
                 isFriday,
@@ -78,6 +78,7 @@ const getCronSchedule = async () => {
 
 const checkIsExecute = async (now, value, detailValue) => {
     const createFlightWithDetails = async () => {
+        console.log("Creating flight with details for:", value);
         const data = await createFligth({
             flight_number: generateRandomString(6),
             city_arrive_id: value.city_arrive_id,
@@ -88,18 +89,18 @@ const checkIsExecute = async (now, value, detailValue) => {
             time_arrive: value.time_arrive,
             time_departure: value.time_departure
         });
-
+        console.log("Flight created:", data);
 
         for (let i = 0; i < detailValue.length; i++) {
+            console.log("Creating detail flight for:", detailValue[i]);
             await createDetailFligth({
                 detail_plane_id: detailValue[i].detail_plane_id,
                 flight_id: data.id,
                 price: detailValue[i].price
             });
         }
-
-
     };
+
     switch (now.getDay()) {
         case 0:
             if (value.isSunday) {
@@ -112,7 +113,7 @@ const checkIsExecute = async (now, value, detailValue) => {
             }
             break;
         case 2:
-            if (value.isThuesday) {
+            if (value.isTuesday) {
                 await createFlightWithDetails();
             }
             break;

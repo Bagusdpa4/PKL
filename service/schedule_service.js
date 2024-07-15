@@ -52,17 +52,12 @@ const getDataFind = async ({ city_arrive_id, city_destination_id, date_flight, s
         OFFSET ${skip}
         LIMIT ${take};`;
 
-
-
     const result = await prisma.$queryRaw(query);
     return result;
 };
 
-
-
 const countDataFind = async ({ city_arrive_id, city_destination_id, date_flight, seat_class, price_from, price_to, time_from, time_to }) => {
     let condition = "";
-
 
     if (!condition && price_from !== undefined && price_to !== undefined) {
         condition += `AND df.price BETWEEN ${price_from} AND ${price_to}`;
@@ -151,7 +146,6 @@ const getDetailFlightById = async (detailFlightId) => {
     })
 }
 
-
 const getDetailFlight = async () => {
     return await prisma.detailFlight.findMany({
         select: {
@@ -180,12 +174,11 @@ const getDetailFlight = async () => {
     })
 }
 
-
 const createSchedule = async (flightData) => {
     try {
         const createdFlight = await prisma.flight.create({ data: flightData });
 
-        const detailData = v.detail_data.map(detail => ({
+        const detailData = flightData.detail_data.map(detail => ({
             detail_plane_id: detail.detail_plane_id,
             price: detail.price,
             flight_id: createdFlight.id,
@@ -195,9 +188,7 @@ const createSchedule = async (flightData) => {
     } catch (error) {
         return { error }
     }
-
 }
-
 
 const createFligth = async ({ date_flight,
     estimation_minute,
@@ -225,7 +216,6 @@ const createFligth = async ({ date_flight,
     }
 }
 
-
 const createDetailFligth = async ({ price, detail_plane_id, flight_id }) => {
     try {
         return await prisma.detailFlight.create({
@@ -237,7 +227,6 @@ const createDetailFligth = async ({ price, detail_plane_id, flight_id }) => {
         throw error
     }
 }
-
 
 module.exports = {
     getDataFind,

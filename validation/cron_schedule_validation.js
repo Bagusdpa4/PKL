@@ -18,7 +18,7 @@ const cronScheduleValidation = joi.object({
     city_destination_id: joi.number().required(),
     discount: joi.number().max(100).min(0),
     is_monday: joi.bool(),
-    is_thuesday: joi.bool(),
+    is_tuesday: joi.bool(),
     is_wednesday: joi.bool(),
     is_thursday: joi.bool(),
     is_friday: joi.bool(),

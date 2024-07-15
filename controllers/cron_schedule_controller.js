@@ -7,7 +7,7 @@ const getCronScheduleData = async (hari) => {
     const daysMap = [
         'isSunday',
         'isMonday',
-        'isThuesday',
+        'isTuesday',
         'isWednesday',
         'isThursday',
         'isFriday',
@@ -17,6 +17,7 @@ const getCronScheduleData = async (hari) => {
     try {
         if (hari >= 0 && hari < daysMap.length) {
             const dayProperty = daysMap[hari];
+            console.log(`Fetching data for day property: ${dayProperty}`);
             const data = await prisma.cronJobSchedule.findMany({
                 where: {
                     [dayProperty]: true
@@ -25,8 +26,10 @@ const getCronScheduleData = async (hari) => {
                     detail_cron_Job_Schedul: true
                 }
             });
+            console.log(`Data fetched for ${dayProperty}:`, data);
             return data;
         } else {
+            console.error('Hari tidak valid');
             return 'Hari tidak valid';
         }
     } catch (error) {
@@ -39,14 +42,18 @@ const runCronJob = async (req, res) => {
     console.log("cron schedule running");
     try {
         let now = utcTimePlus7();
+        console.log("Current time:", now);
         now.setDate(now.getDate() + 7);
         let hari = now.getDay();
+        console.log("Day of the week:", hari);
 
         let data = await getCronScheduleData(hari);
+        console.log("Fetched data:", data);
 
         data.forEach(async (value) => {
             let detailFlight = value.detail_cron_Job_Schedul;
             delete value.detail_cron_Job_Schedul;
+            console.log("Executing checkIsExecute for:", value);
             await checkIsExecute(now, value, detailFlight);
         });
 

@@ -216,7 +216,7 @@ model CronJobSchedule {
   city_arrive             City                   @relation("CRN_Arrive", fields: [city_arrive_id], references: [id])
   city_destination        City                   @relation("CRN_Destination", fields: [city_destination_id], references: [id])
   isMonday                Boolean                @default(false)
-  isThuesday              Boolean                @default(false)
+  isTuesday               Boolean                @default(false) // Corrected
   isWednesday             Boolean                @default(false)
   isThursday              Boolean                @default(false)
   isFriday                Boolean                @default(false)
