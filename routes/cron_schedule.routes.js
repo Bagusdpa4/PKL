@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { runCronJob } = require('../controllers/cron_schedule_controller');
+const { addCronJob } = require('../controllers/cron_schedule_controller');
 
-router.post('/run-cron-job', runCronJob);
+router.post('/add-cron-job', addCronJob);
 
 module.exports = router;

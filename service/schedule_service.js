@@ -247,6 +247,16 @@ const createDetailFlight = async ({ price, detail_plane_id, flight_id }) => {
     }
 }
 
+const getAllFlights = async () => {
+    try {
+        const flights = await prisma.flight.findMany();
+        return flights;
+    } catch (error) {
+        console.error("Error fetching flights:", error);
+        throw error;
+    }
+};
+
 module.exports = {
     getDataFind,
     countDataFind,
@@ -255,5 +265,6 @@ module.exports = {
     getDetailFlight,
     getDetailFlightByFlightId,
     createFlight,
-    createDetailFlight
+    createDetailFlight,
+    getAllFlights
 }

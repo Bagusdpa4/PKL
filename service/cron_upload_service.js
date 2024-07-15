@@ -1,5 +1,5 @@
 const { PrismaClient } = require("@prisma/client");
-const { createFlight, createDetailFlight } = require("./schedule_service");
+const { createFlight, createDetailFlight, getAllFlights } = require("./schedule_service");
 const { generateRandomString } = require("../utils/helper");
 const prisma = new PrismaClient()
 
@@ -148,10 +148,41 @@ const checkIsExecute = async (now, value, detailValue) => {
     }
 }
 
+const addCronJobSchedule = async () => {
+    try {
+        const flights = await getAllFlights();
+        const daysOfWeek = ['isSunday', 'isMonday', 'isTuesday', 'isWednesday', 'isThursday', 'isFriday', 'isSaturday'];
+
+        for (let i = 0; i < 7; i++) {
+            const date = new Date();
+            date.setDate(date.getDate() + i);
+            const dayOfWeek = daysOfWeek[date.getDay()];
+
+            for (const flight of flights) {
+                const data = await prisma.cronJobSchedule.create({
+                    data: {
+                        flight_key: generateRandomString(6),
+                        time_arrive: flight.time_arrive,
+                        time_departure: flight.time_departure,  
+                        city_arrive_id: flight.city_arrive_id,
+                        city_destination_id: flight.city_destination_id,
+                        estimation_minute: flight.estimation_minute,
+                        discount: flight.discount,
+                        [dayOfWeek]: true,
+                    }
+                });
+                console.log(`Cron job schedule added for ${dayOfWeek}:`, data);
+            }
+        }
+    } catch (error) {
+        console.error("Error adding cron job schedule:", error);
+    }
+};
 
 module.exports = {
     createCronSchedule,
     createDetailCronSchedule,
     getCronSchedule,
-    checkIsExecute
+    checkIsExecute,
+    addCronJobSchedule
 }

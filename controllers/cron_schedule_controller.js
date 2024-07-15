@@ -2,7 +2,7 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 const { getNextWeekDate, utcTimePlus7, convertToIso } = require("../utils/formattedDate");
-const { checkIsExecute } = require("../service/cron_upload_service");
+const { checkIsExecute, addCronJobSchedule } = require("../service/cron_upload_service");
 
 const getCronScheduleData = async (hari) => {
     const daysMap = [
@@ -65,6 +65,17 @@ const runCronJob = async (req, res) => {
     }
 };
 
+const addCronJob = async (req, res) => {
+    try {
+        await addCronJobSchedule();
+        res.status(200).send("Cron job schedule added successfully");
+    } catch (error) {
+        console.error("Error adding cron job schedule:", error);
+        res.status(500).send("Error adding cron job schedule");
+    }
+};
+
 module.exports = {
-    runCronJob
+    runCronJob,
+    addCronJob
 };
