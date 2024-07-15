@@ -63,6 +63,6 @@ const runCronJob = async () => {
     }
 };
 
-var task = cron.schedule('1 * * * * *', runCronJob, { timezone: "Asia/Jakarta" });
+var task = cron.schedule('1 * 0 * * *', runCronJob, { timezone: "Asia/Jakarta" });
 
 module.exports = task;

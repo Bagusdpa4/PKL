@@ -1,5 +1,5 @@
 const { PrismaClient } = require("@prisma/client");
-const { createFligth, createDetailFligth } = require("./schedule_service");
+const { createFlight, createDetailFlight } = require("./schedule_service");
 const { generateRandomString } = require("../utils/helper");
 const prisma = new PrismaClient()
 
@@ -79,7 +79,7 @@ const getCronSchedule = async () => {
 const checkIsExecute = async (now, value, detailValue) => {
     const createFlightWithDetails = async () => {
         console.log("Creating flight with details for:", value);
-        const data = await createFligth({
+        const data = await createFlight({
             flight_number: generateRandomString(6),
             city_arrive_id: value.city_arrive_id,
             city_destination_id: value.city_destination_id,
@@ -93,7 +93,7 @@ const checkIsExecute = async (now, value, detailValue) => {
 
         for (let i = 0; i < detailValue.length; i++) {
             console.log("Creating detail flight for:", detailValue[i]);
-            await createDetailFligth({
+            await createDetailFlight({
                 detail_plane_id: detailValue[i].detail_plane_id,
                 flight_id: data.id,
                 price: detailValue[i].price
@@ -101,39 +101,47 @@ const checkIsExecute = async (now, value, detailValue) => {
         }
     };
 
+    console.log("Checking execution for day:", now.getDay());
     switch (now.getDay()) {
         case 0:
             if (value.isSunday) {
+                console.log("Executing for Sunday");
                 await createFlightWithDetails();
             }
             break;
         case 1:
             if (value.isMonday) {
+                console.log("Executing for Monday");
                 await createFlightWithDetails();
             }
             break;
         case 2:
             if (value.isTuesday) {
+                console.log("Executing for Tuesday");
                 await createFlightWithDetails();
             }
             break;
         case 3:
             if (value.isWednesday) {
+                console.log("Executing for Wednesday");
                 await createFlightWithDetails();
             }
             break;
         case 4:
             if (value.isThursday) {
+                console.log("Executing for Thursday");
                 await createFlightWithDetails();
             }
             break;
         case 5:
             if (value.isFriday) {
+                console.log("Executing for Friday");
                 await createFlightWithDetails();
             }
             break;
         case 6:
             if (value.isSaturday) {
+                console.log("Executing for Saturday");
                 await createFlightWithDetails();
             }
             break;

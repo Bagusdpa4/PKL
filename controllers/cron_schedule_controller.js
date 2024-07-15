@@ -1,5 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
+
 const { getNextWeekDate, utcTimePlus7, convertToIso } = require("../utils/formattedDate");
 const { checkIsExecute } = require("../service/cron_upload_service");
 
@@ -50,16 +51,16 @@ const runCronJob = async (req, res) => {
         let data = await getCronScheduleData(hari);
         console.log("Fetched data:", data);
 
-        data.forEach(async (value) => {
+        for (const value of data) {
             let detailFlight = value.detail_cron_Job_Schedul;
             delete value.detail_cron_Job_Schedul;
             console.log("Executing checkIsExecute for:", value);
             await checkIsExecute(now, value, detailFlight);
-        });
+        }
 
         res.status(200).send("Cron job executed successfully");
     } catch (error) {
-        console.error("Error executing cron job:", error);
+        console.error("Error in cron job:", error);
         res.status(500).send("Error executing cron job");
     }
 };

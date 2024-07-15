@@ -190,7 +190,7 @@ const createSchedule = async (flightData) => {
     }
 }
 
-const createFligth = async ({ date_flight,
+const createFlight = async ({ date_flight,
     estimation_minute,
     flight_number,
     time_arrive,
@@ -199,7 +199,17 @@ const createFligth = async ({ date_flight,
     city_destination_id,
     discount }) => {
     try {
-        return await prisma.flight.create({
+        console.log("Creating flight with data:", {
+            date_flight,
+            estimation_minute,
+            flight_number,
+            time_arrive,
+            time_departure,
+            city_arrive_id,
+            city_destination_id,
+            discount
+        });
+        const result = await prisma.flight.create({
             data: {
                 date_flight,
                 estimation_minute,
@@ -210,21 +220,30 @@ const createFligth = async ({ date_flight,
                 city_destination_id,
                 discount,
             }
-        })
+        });
+        console.log("Flight created:", result);
+        return result;
     } catch (error) {
-        throw error
+        console.error("Error creating flight:", error);
+        throw error;
     }
 }
 
-const createDetailFligth = async ({ price, detail_plane_id, flight_id }) => {
+const createDetailFlight = async ({ price, detail_plane_id, flight_id }) => {
     try {
-        return await prisma.detailFlight.create({
+        console.log("Creating detail flight with data:", {
+            price, detail_plane_id, flight_id
+        });
+        const result = await prisma.detailFlight.create({
             data: {
                 price, detail_plane_id, flight_id
             }
-        })
+        });
+        console.log("Detail flight created:", result);
+        return result;
     } catch (error) {
-        throw error
+        console.error("Error creating detail flight:", error);
+        throw error;
     }
 }
 
@@ -235,6 +254,6 @@ module.exports = {
     getDetailFlightById,
     getDetailFlight,
     getDetailFlightByFlightId,
-    createFligth,
-    createDetailFligth
+    createFlight,
+    createDetailFlight
 }
